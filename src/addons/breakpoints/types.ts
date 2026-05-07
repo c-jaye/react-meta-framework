@@ -1,4 +1,4 @@
-import type { Obj } from "@/types"
+import type { Obj } from "@cjaye/utils"
 
 export interface ViewportTypes {
     globals: ViewportState

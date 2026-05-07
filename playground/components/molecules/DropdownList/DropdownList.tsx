@@ -1,13 +1,13 @@
-import type { JSONPrimitive, LabelValue } from "@/types"
+import type { JSONPrimitive, LabelValue } from "@cjaye/utils"
 import { useCallback, useEffect, useState } from "react"
 import { useComponentState, useOptionsSearch } from "@/hooks"
 import type { DropdownListProps } from "./types"
 import classNames from "classnames"
-import { toJson } from "@/util"
 
 import DropdownListItem from "~/components/DropdownListItem"
 
 import scss from "./dropdown-list.module.scss"
+import { toJson } from "@cjaye/utils"
 
 export const DropdownList = <T extends JSONPrimitive = JSONPrimitive>({
     items = [],

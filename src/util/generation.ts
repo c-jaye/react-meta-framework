@@ -1,8 +1,8 @@
 /* eslint-disable import-x/no-nodejs-modules */
 
-import type { Obj, Tokens } from "@/types"
+import { type Obj, entriesOf } from "@cjaye/utils"
+import type { Tokens } from "@/types"
 import { buildScssMap } from "./scss"
-import { entriesOf } from "./helpers"
 import { writeFile } from "fs/promises"
 
 export async function buildTokens(tokenFile: string, tokensDir: string, spaces = 4) {

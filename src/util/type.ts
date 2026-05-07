@@ -3,7 +3,7 @@ import type { CSSProperties } from "react"
 import type { Font } from "opentype.js"
 import type { Metrics } from "@/types/type"
 import opentype from "opentype.js"
-import { round } from "./math"
+import { round } from "@cjaye/utils"
 
 export function measureText(text: string, options: {
     fontFamily: string

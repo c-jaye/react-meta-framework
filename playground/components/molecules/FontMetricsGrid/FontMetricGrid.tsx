@@ -1,4 +1,4 @@
-import { fontFaceStyles, fontMetricsStyles, fontTypeStyles } from "@/util"
+import { fontFaceStyles, fontMetricsStyles, fontTypeStyles } from "@/util/type"
 import type { FontMetricGridProps } from "./types"
 import { LOREM_IPSUM } from "@/const/strings"
 import classNames from "classnames"
