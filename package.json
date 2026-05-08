@@ -1,5 +1,5 @@
 {
-    "name": "@cjaye/react-meta-state",
+    "name": "@cjaye/react-meta-framework",
     "version": "1.0.2",
     "description": "",
     "keywords": [],
@@ -7,7 +7,7 @@
     "author": "Charles Jaye",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/c-jaye/react-meta-state.git"
+        "url": "git+https://github.com/c-jaye/react-meta-framework.git"
     },
     "private": false,
     "type": "module",
@@ -80,29 +80,11 @@
             "default": "./dist/addons/breakpoints/manager.mjs"
         },
         "./scss/*": "./dist/scss/*.scss",
-        "./hooks": {
-            "types": "./dist/hooks/index.d.mts",
-            "import": "./dist/hooks/index.mjs",
-            "require": "./dist/hooks/index.cjs",
-            "default": "./dist/hooks/index.mjs"
-        },
-        "./plugins": {
-            "types": "./dist/plugins/index.d.mts",
-            "import": "./dist/plugins/index.mjs",
-            "require": "./dist/plugins/index.cjs",
-            "default": "./dist/plugins/index.mjs"
-        },
-        "./types": {
-            "types": "./dist/types/index.d.mts",
-            "import": "./dist/types/index.mjs",
-            "require": "./dist/types/index.cjs",
-            "default": "./dist/types/index.mjs"
-        },
-        "./util": {
-            "types": "./dist/util/index.d.mts",
-            "import": "./dist/util/index.mjs",
-            "require": "./dist/util/index.cjs",
-            "default": "./dist/util/index.mjs"
+        ".": {
+            "types": "./dist/index.d.mts",
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.cjs",
+            "default": "./dist/index.mjs"
         },
         "./package.json": "./package.json"
     },

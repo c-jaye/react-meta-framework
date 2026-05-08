@@ -59,20 +59,8 @@ export default defineBuildConfig([{
         name: "addons/state/manager",
         declaration: true,
     }, {
-        input: "src/hooks/index.ts",
-        name: "hooks/index",
-        declaration: true,
-    }, {
-        input: "src/plugins/index.ts",
-        name: "plugins/index",
-        declaration: true,
-    }, {
-        input: "src/types/index.ts",
-        name: "types/index",
-        declaration: true,
-    }, {
-        input: "src/util/index.ts",
-        name: "util/index",
+        input: "src/index.ts",
+        name: "index",
         declaration: true,
     }],
     outDir: "dist",
