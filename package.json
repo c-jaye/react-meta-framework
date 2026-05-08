@@ -1,5 +1,5 @@
 {
-    "name": "@cjaye/react-meta-state",
+    "name": "@cjaye/react-meta-framework",
     "version": "1.0.2",
     "description": "",
     "keywords": [],
@@ -7,7 +7,7 @@
     "author": "Charles Jaye",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/c-jaye/react-meta-state.git"
+        "url": "git+https://github.com/c-jaye/react-meta-framework.git"
     },
     "private": false,
     "type": "module",

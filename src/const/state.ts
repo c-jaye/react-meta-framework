@@ -1,11 +1,11 @@
 import type { ComponentState } from "@/types"
 
-export const STATE_ADDON_ID = "react-meta-state-state"
+export const STATE_ADDON_ID = "react-meta-framework-state"
 export const STATE_TOOL_ID = `${STATE_ADDON_ID}/tool`
 export const STATE_PANEL_ID = `${STATE_ADDON_ID}/panel`
 export const STATE_TAB_ID = `${STATE_ADDON_ID}/tab`
 
-export const BREAKPOINT_ADDON_ID = "react-meta-state-breakpoints"
+export const BREAKPOINT_ADDON_ID = "react-meta-framework-breakpoints"
 export const BREAKPOINT_TOOL_ID = `${BREAKPOINT_ADDON_ID}/tool`
 export const BREAKPOINT_PANEL_ID = `${BREAKPOINT_ADDON_ID}/panel`
 export const BREAKPOINT_PARAM_ID = `${BREAKPOINT_ADDON_ID}/param`
