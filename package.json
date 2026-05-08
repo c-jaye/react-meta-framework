@@ -1,13 +1,13 @@
 {
-    "name": "@cjaye/react-meta-state",
-    "version": "1.0.0",
+    "name": "@cjaye/react-meta-framework",
+    "version": "1.0.2",
     "description": "",
     "keywords": [],
     "license": "MIT",
     "author": "Charles Jaye",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/c-jaye/react-meta-state.git"
+        "url": "git+https://github.com/c-jaye/react-meta-framework.git"
     },
     "private": false,
     "type": "module",
@@ -15,7 +15,7 @@
         "clean": "pnpx del-cli@latest --force \"**/pnpm-lock.yaml\" \"**/storybook-static\" \"**/test-results.xml\" \"**/*.log\" \"**/node_modules\" \"**/dist\" \"**/.husky/_\" \"**/chromatic-build-*.xml\" \"**/verdaccio/storage\" \"**/verdaccio/htpasswd\" \"**/verdaccio/config.yaml\"",
         "bump": "sed -i -E 's/\"version\": *\"[^\"]*\"/\"version\": \"'\"${GITHUB_REF_NAME#v}\"'\"/' package.json && rm -rf package.json-E",
         "prepare:all": "pnpm run prepare:verdaccio && pnpm run prepare:husky && pnpm run prepare:generation && pnpm run prepare:playwright",
-        "prepare:verdaccio": "sudo apt-get update && sudo apt-get install -y expect && chmod +x verdaccio/init verdaccio/login",
+        "prepare:verdaccio": "sudo apt-get update || true && sudo apt-get install -y expect || true && chmod +x verdaccio/init verdaccio/login",
         "prepare:husky": "husky || true && chmod +x .husky/pre-push",
         "prepare:generation": "pnpx jiti bin/generate.ts",
         "prepare:playwright": "pnpx playwright install --with-deps",
@@ -31,7 +31,7 @@
         "dev:storybook": "storybook dev -p 6006 -c ./playground/.storybook",
         "dev:verdaccio": "verdaccio --listen 30333",
         "prepublishOnly": "pnpx del-cli --force \"**/dist\" && pnpm run prepare:all && pnpm run build:bundle",
-        "publish:verdaccio": "verdaccio/init || true && verdaccio/login && pnpm run dev:verdaccio & sleep 3 && pnpm publish --access public --tag latest --no-git-checks --registry http://localhost:30333",
+        "publish:verdaccio": "pnpm run dev:verdaccio & sleep 5 && verdaccio/init || true && verdaccio/login && pnpm publish --access public --tag latest --no-git-checks --registry http://localhost:30333",
         "publish:chromatic": "pnpx chromatic@latest",
         "publish:npm": "pnpm publish --access public --tag latest --no-git-checks --registry registry.npmjs.org"
     },
@@ -80,29 +80,11 @@
             "default": "./dist/addons/breakpoints/manager.mjs"
         },
         "./scss/*": "./dist/scss/*.scss",
-        "./hooks": {
-            "types": "./dist/hooks/index.d.mts",
-            "import": "./dist/hooks/index.mjs",
-            "require": "./dist/hooks/index.cjs",
-            "default": "./dist/hooks/index.mjs"
-        },
-        "./plugins": {
-            "types": "./dist/plugins/index.d.mts",
-            "import": "./dist/plugins/index.mjs",
-            "require": "./dist/plugins/index.cjs",
-            "default": "./dist/plugins/index.mjs"
-        },
-        "./types": {
-            "types": "./dist/types/index.d.mts",
-            "import": "./dist/types/index.mjs",
-            "require": "./dist/types/index.cjs",
-            "default": "./dist/types/index.mjs"
-        },
-        "./util": {
-            "types": "./dist/util/index.d.mts",
-            "import": "./dist/util/index.mjs",
-            "require": "./dist/util/index.cjs",
-            "default": "./dist/util/index.mjs"
+        ".": {
+            "types": "./dist/index.d.mts",
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.cjs",
+            "default": "./dist/index.mjs"
         },
         "./package.json": "./package.json"
     },
@@ -112,9 +94,10 @@
         "win32"
     ],
     "dependencies": {
+        "@cjaye/utils": "^1.0.1",
+        "opentype.js": "^1.3.4",
         "react": "^18.3.1",
-        "react-dom": "^18.3.1",
-        "opentype.js": "^1.3.4"
+        "react-dom": "^18.3.1"
     },
     "peerDependencies": {
         "react": "^18.3.1",

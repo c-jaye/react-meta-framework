@@ -1,4 +1,5 @@
-import type { Aspect, Font, Obj, Theme, Tokens } from "@/types"
+import type { Aspect, Font, Theme, Tokens } from "@/types"
+import type { Obj } from "@cjaye/utils"
 
 export const aspects = {
     narrow: {

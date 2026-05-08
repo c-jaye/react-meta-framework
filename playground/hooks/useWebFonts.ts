@@ -1,5 +1,6 @@
-import type { LabelValue, Obj } from "@/types"
-import { calculateMetrics, fetchAny, fetchJson, installFontFace, measureText, opentypeMetrics, toUrlParams } from "@/util"
+import type { LabelValue, Obj } from "@cjaye/utils"
+import { calculateMetrics, installFontFace, measureText, opentypeMetrics } from "@/util/type"
+import { fetchAny, fetchJson, toUrlParams } from "@cjaye/utils"
 import { useCallback, useRef, useState } from "react"
 import { FONT_TEST_CHARACTERS } from "@/const/strings"
 import type { FullMetrics } from "@/types/type"

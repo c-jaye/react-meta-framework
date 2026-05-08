@@ -2,8 +2,8 @@ import type { FontFaceConfig, FontMetricsConfig, FontTypeConfig } from "@/types/
 import type { CSSProperties } from "react"
 import type { Font } from "opentype.js"
 import type { Metrics } from "@/types/type"
-import opentype from "opentype.js"
-import { round } from "./math"
+import { parse } from "opentype.js"
+import { round } from "@cjaye/utils"
 
 export function measureText(text: string, options: {
     fontFamily: string
@@ -57,7 +57,7 @@ export async function installFontFace(
 }
 
 export function opentypeMetrics(buffer: ArrayBuffer) {
-    return opentype.parse(buffer)
+    return parse(buffer)
 }
 
 export function calculateMetrics(opentype: Font, fontSize: number): Metrics {

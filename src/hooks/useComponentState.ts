@@ -1,5 +1,5 @@
-import type { ComponentState, ComponentStateProps, Mutable, Obj } from "@/types"
-import { deepMerge, deepMergeAll, entriesOf, fromJson, isBool, isFunc, isIn, keysOf, wait } from "@/util"
+import type { ComponentState, ComponentStateProps } from "@/types"
+import { type Mutable, type Obj, deepMerge, deepMergeAll, entriesOf, fromJson, isBool, isFunc, isIn, keysOf, wait } from "@cjaye/utils"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { DEFAULT_COMPONENT_STATE } from "@/const/state"
 

@@ -1,8 +1,9 @@
-import type { BaseProps, KeyOf } from "@/types"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { deepMerge, keysOf, titleCase } from "@/util"
+import { deepMerge, keysOf, titleCase } from "@cjaye/utils"
+import type { BaseProps } from "@/types"
 import { DEFAULT_COMPONENT_STATE } from "@/const/state"
 import type { FC } from "react"
+import type { KeyOf } from "@cjaye/utils"
 import { unit } from "~/assets/scss"
 
 export function generateStateStory<T extends BaseProps>(

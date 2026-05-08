@@ -1,5 +1,5 @@
 import { type ComponentPropsWithRef, type ElementType, type PropsWithChildren, type Ref } from "react"
-import type { Obj } from "./util"
+import type { Obj } from "@cjaye/utils"
 import type { THEME } from "@/const/state"
 
 export type ComponentState<T extends Obj<boolean | undefined> = Obj<boolean | undefined>> = Obj<boolean | undefined> & {
