@@ -47,7 +47,7 @@ const config = defineMain({
                 ),
             ],
             optimizeDeps: {
-                exclude: ["ast-types", "opentype.js", "fs", "fs/promises"],
+                exclude: ["ast-types", "fs", "fs/promises"],
                 include: ["react", "react-dom", "classnames"],
             },
             define: {
