@@ -32,10 +32,10 @@
         "dev:verdaccio": "verdaccio --listen 30333",
         "prepublishOnly": "pnpx del-cli --force \"**/dist\" && pnpm run prepare:all && pnpm run build:bundle",
         "publish:verdaccio": "pnpm run dev:verdaccio & sleep 5 && verdaccio/init || true && verdaccio/login && pnpm publish --access public --tag latest --no-git-checks --registry http://localhost:30333",
-        "publish:chromatic": "pnpx chromatic@latest",
+        "publish:chromatic": "pnpx chromatic@latest --force-rebuild",
         "publish:npm": "pnpm publish --access public --tag latest --no-git-checks --registry registry.npmjs.org"
     },
-    "packageManager": "pnpm@10.33.0",
+    "packageManager": "pnpm@11.1.2",
     "engines": {
         "node": "^24.15.0"
     },
