@@ -1,12 +1,10 @@
 /* eslint-disable import-x/no-nodejs-modules */
 
 import type { InlineConfig } from "vite"
-import breakpoints from "@cjaye/react-meta-framework/addons/breakpoints"
 import { defineMain } from "@storybook/react-vite/node"
 import dotenv from "dotenv"
 import { mergeConfig } from "vite"
 import { resolve } from "path"
-import state from "@cjaye/react-meta-framework/addons/state"
 import tokenGenerator from "../../src/plugins/tokenGenerator"
 
 const config = defineMain({
@@ -18,9 +16,12 @@ const config = defineMain({
         "@storybook/addon-designs",
         "@storybook/addon-a11y",
         "@chromatic-com/storybook",
-        ...(process.env.npm_lifecycle_event === "dev:storybook"
+        ...(process.env.npm_lifecycle_event !== "dev:storybook"
             ? [import.meta.resolve("./localPreset.ts")]
-            : [state, breakpoints]
+            : [
+                "@cjaye/react-meta-framework/addons/state",
+                "@cjaye/react-meta-framework/addons/breakpoints",
+            ]
         ),
     ],
     framework: {
