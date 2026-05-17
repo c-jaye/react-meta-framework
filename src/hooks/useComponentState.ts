@@ -4,13 +4,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { DEFAULT_COMPONENT_STATE } from "@/const/state"
 
 export default function useComponentState<S extends Obj<boolean | undefined> = ComponentState>(
-    options?: ComponentStateProps<S>,
+    options?: ComponentStateProps<S> & { utiliseTouch?: boolean },
 ) {
     const {
         ref: parentRef,
         stateDefinition = DEFAULT_COMPONENT_STATE,
         onStateChange,
         stateOverride,
+        utiliseTouch = false,
     } = options ?? {}
 
     const refs = useRef<Obj<HTMLElement | SVGElement | null>>({})
@@ -24,8 +25,8 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
     const [finalState, setFinalState] = useState<Obj<ComponentState<S>> & ComponentState<S>>({})
 
     const isTouch = useMemo(() => {
-        return !window.matchMedia("(hover: hover) and (pointer: fine) and (update: fast)").matches
-    }, [])
+        return utiliseTouch && !window.matchMedia("(hover: hover) and (pointer: fine) and (update: fast)").matches
+    }, [utiliseTouch])
 
     const getAttributeState = useCallback((key: string) => {
         const attributeState = refs.current[key]?.getAttribute("data-rms")

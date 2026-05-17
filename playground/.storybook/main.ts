@@ -16,9 +16,13 @@ const config = defineMain({
         "@storybook/addon-designs",
         "@storybook/addon-a11y",
         "@chromatic-com/storybook",
-        process.env.STORYBOOK
-            ? ""
-            : import.meta.resolve("./localPreset.ts"),
+        ...(process.env.npm_lifecycle_event !== "dev:storybook"
+            ? [import.meta.resolve("./localPreset.ts")]
+            : [
+                "@cjaye/react-meta-framework/addons/state",
+                "@cjaye/react-meta-framework/addons/breakpoints",
+            ]
+        ),
     ],
     framework: {
         name: "@storybook/react-vite",
