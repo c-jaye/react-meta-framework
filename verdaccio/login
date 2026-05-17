@@ -1,5 +1,5 @@
 expect <<EOF
-spawn pnpm login --registry http://localhost:30333 --userconfig .npmrc
+spawn npm login --registry http://localhost:30333 --userconfig .npmrc
 expect "Username:"
 send "user\r"
 expect "Password:"
