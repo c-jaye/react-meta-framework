@@ -107,10 +107,10 @@ $const-fonts: () !default;
     --#{$_font}-font-style: #{map.get($_metrics, style)};
 
     --#{$_font}-fm-ascent: #{map.get($_metrics, ascent)};
-    --#{$_font}-fm-cap-height: #{map.get($_metrics, capHeight)};
-    --#{$_font}-fm-ex-height: #{map.get($_metrics, exHeight)};
+    --#{$_font}-fm-cap-height: #{map.get($_metrics, cap-height)};
+    --#{$_font}-fm-ex-height: #{map.get($_metrics, ex-height)};
     --#{$_font}-fm-descent: #{map.get($_metrics, descent)};
-    --#{$_font}-fm-line-gap: #{map.get($_metrics, lineGap)};
+    --#{$_font}-fm-line-gap: #{map.get($_metrics, line-gap)};
     --#{$_font}-fm-size: #{map.get($_metrics, size)};
   }
 
