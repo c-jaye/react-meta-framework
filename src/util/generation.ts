@@ -1,11 +1,13 @@
-/* eslint-disable import-x/no-nodejs-modules */
-
 import { type Obj, entriesOf } from "@cjaye/utils"
 import type { Tokens } from "@/types"
 import { buildScssMap } from "./scss"
-import { writeFile } from "fs/promises"
 
-export async function buildTokens(tokenFile: string, tokensDir: string, spaces = 4) {
+export async function buildTokens(
+    writeFile: (path: string, content: string) => Promise<unknown>,
+    tokenFile: string,
+    tokensDir: string,
+    spaces = 4,
+) {
     const module = await import(`${tokenFile}?v=${Date.now()}`) as { default: Tokens }
 
     const useSassMap = "@use \"sass:map\";\n\n"

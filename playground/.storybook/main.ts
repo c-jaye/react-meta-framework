@@ -6,6 +6,7 @@ import dotenv from "dotenv"
 import { mergeConfig } from "vite"
 import { resolve } from "path"
 import tokenGenerator from "../../src/plugins/tokenGenerator"
+import { writeFile } from "fs/promises"
 
 const config = defineMain({
     stories: [
@@ -46,6 +47,7 @@ const config = defineMain({
             },
             plugins: [
                 tokenGenerator(
+                    writeFile,
                     resolve(import.meta.dirname, "../assets/scss.ts"),
                     resolve(import.meta.dirname, "../assets/scss/tokens"),
                 ),
