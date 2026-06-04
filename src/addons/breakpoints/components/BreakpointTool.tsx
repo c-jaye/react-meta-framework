@@ -12,7 +12,7 @@ import { NumericInput } from "./NumericInput"
 
 export const BreakpointTool = memo(({ api }: { api: API }) => {
     const dragSide = useRef<DragSide>("none")
-    const dragStart = useRef<[number, number] | undefined>()
+    const dragStart = useRef<[number, number] | undefined>(undefined)
     const dragScrollTarget = useRef<Element | null | undefined>(null)
 
     const $frame = useRef<HTMLDivElement | null>(null)
