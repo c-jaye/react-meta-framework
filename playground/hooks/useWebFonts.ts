@@ -1,9 +1,10 @@
 import type { LabelValue, Obj } from "@cjaye/utils"
-import { calculateMetrics, installFontFace, measureText, opentypeMetrics } from "@/util/type"
+import { calculateMetrics, installFontFace, measureText } from "@/util/type"
 import { fetchAny, fetchJson, toUrlParams } from "@cjaye/utils"
 import { useCallback, useRef, useState } from "react"
 import { FONT_TEST_CHARACTERS } from "@/const/strings"
 import type { FullMetrics } from "@/types/type"
+import { opentypeMetrics } from "~/util/opentype"
 
 export interface UseWebFontsOptions {
     onLoadOptions?: (options: {
