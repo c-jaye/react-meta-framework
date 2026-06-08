@@ -1,6 +1,6 @@
 {
     "name": "@cjaye/react-meta-framework",
-    "version": "1.0.9",
+    "version": "1.10.0",
     "description": "",
     "keywords": [],
     "license": "MIT",
@@ -112,7 +112,8 @@
     },
     "devDependencies": {
         "@chromatic-com/storybook": "^5.2.1",
-        "@cjaye/react-meta-framework": "^1.0.7",
+        "@cjaye/utils": "^1.0.5",
+        "@cjaye/react-meta-framework": "^1.0.9",
         "@storybook/addon-a11y": "^10.4.2",
         "@storybook/addon-designs": "^11.1.3",
         "@storybook/addon-vitest": "^10.4.2",
