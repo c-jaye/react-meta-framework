@@ -26,8 +26,6 @@ export default defineBuildConfig([{
                 await copyFile(file, targetPath)
             }
 
-            await copyFile("package.json", "dist/package.json")
-
             exec("npx eslint dist --fix")
         },
     },
