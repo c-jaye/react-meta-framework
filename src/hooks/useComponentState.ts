@@ -1,7 +1,7 @@
+import { COMPONENT_STATE_ORDER, DEFAULT_COMPONENT_STATE } from "@/const/state"
 import type { ComponentState, ComponentStateProps } from "@/types"
 import { type Mutable, type Obj, deepMerge, deepMergeAll, entriesOf, fromJson, isBool, isFunc, isIn, keysOf, wait } from "@cjaye/utils"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { DEFAULT_COMPONENT_STATE } from "@/const/state"
 
 export default function useComponentState<S extends Obj<boolean | undefined> = ComponentState>(
     options?: ComponentStateProps<S> & { utiliseTouch?: boolean },
@@ -101,7 +101,7 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
             ...(key === "default" ? newState : {}),
         }))
 
-        keysOf(stateDefinition).forEach(k => el.classList[newState[k] ? "add" : "remove"](k))
+        keysOf(stateDefinition).sort((a, b) => COMPONENT_STATE_ORDER.indexOf(a) - COMPONENT_STATE_ORDER.indexOf(b)).forEach(k => el.classList[newState[k] ? "add" : "remove"](k))
 
         onStateChange?.(newState, key)
 
