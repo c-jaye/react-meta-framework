@@ -38,13 +38,14 @@
             text-decoration-color: token("bg-blue");
         }
     }
+    @if $slot == "active" {}
+    @if $slot == "highlighted" {}
     @if $slot == "focusWithin" {}
     @if $slot == "focus" {
         outline: solid unit(0.4) token("outline-focus");
     }
+    @if $slot == "error" {}
     @if $slot == "pressed" {}
-    @if $slot == "active" {}
-    @if $slot == "highlighted" {}
     @if $slot == "disabled" {}
 }
 
@@ -128,10 +129,11 @@
         }
 
     }
-    @if $slot == "focusWithin" {}
-    @if $slot == "focus" {}
-    @if $slot == "pressed" {}
     @if $slot == "active" {}
     @if $slot == "highlighted" {}
+    @if $slot == "focusWithin" {}
+    @if $slot == "focus" {}
+    @if $slot == "error" {}
+    @if $slot == "pressed" {}
     @if $slot == "disabled" {}
 }
