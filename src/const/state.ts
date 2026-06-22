@@ -22,6 +22,17 @@ export const DEFAULT_COMPONENT_STATE = {
     disabled: false,
 } as const satisfies ComponentState
 
+export const COMPONENT_STATE_ORDER = [
+    "selected",
+    "hover",
+    "active",
+    "highlighted",
+    "focusWithin",
+    "focus",
+    "pressed",
+    "disabled",
+] as const
+
 export const THEME = {
     Light: "light",
     Dark: "dark",
