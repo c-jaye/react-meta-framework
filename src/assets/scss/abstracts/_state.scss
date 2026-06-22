@@ -24,6 +24,10 @@
     #{$_selector}:global(.focus) { @content; }
 }
 
+@mixin error($_selector) {
+    #{$_selector}:global(.error) { @content; }
+}
+
 @mixin pressed($_selector) {
     #{$_selector}:global(.pressed) { @content; }
 }
@@ -40,6 +44,7 @@
     @include highlighted($_selector) { @content("highlighted"); }
     @include focusWithin($_selector) { @content("focusWithin"); }
     @include focus($_selector) { @content("focus"); }
+    @include error($_selector) { @content("error"); }
     @include pressed($_selector) { @content("pressed"); }
     @include disabled($_selector) { @content("disabled"); }
 }

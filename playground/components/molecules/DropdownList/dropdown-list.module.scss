@@ -33,15 +33,6 @@
     @if $slot == "hover" {
         color: token("fg-hover");
     }
-    @if $slot == "focusWithin" {
-        border: solid unit(0.2) token("border-focus-within");
-    }
-    @if $slot == "focus" {
-        outline: solid unit(0.2) token("outline-focus");
-    }
-    @if $slot == "pressed" {
-        background-color: token("bg-pressed");
-    }
     @if $slot == "active" {
         height: unit(27.6);
         max-height: unit(27.6);
@@ -58,6 +49,18 @@
     }
     @if $slot == "highlighted" {
         background-color: token("bg-highlighted");
+    }
+    @if $slot == "focusWithin" {
+        border: solid unit(0.2) token("border-focus-within");
+    }
+    @if $slot == "focus" {
+        outline: solid unit(0.2) token("outline-focus");
+    }
+    @if $slot == "error" {
+        color: token("fg-error");
+    }
+    @if $slot == "pressed" {
+        background-color: token("bg-pressed");
     }
     @if $slot == "disabled" {
         background-color: token("bg-disabled");

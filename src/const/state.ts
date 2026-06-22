@@ -18,6 +18,7 @@ export const DEFAULT_COMPONENT_STATE = {
     highlighted: false,
     focusWithin: false,
     focus: false,
+    error: false,
     pressed: false,
     disabled: false,
 } as const satisfies ComponentState
@@ -29,6 +30,7 @@ export const COMPONENT_STATE_ORDER = [
     "highlighted",
     "focusWithin",
     "focus",
+    "error",
     "pressed",
     "disabled",
 ] as const

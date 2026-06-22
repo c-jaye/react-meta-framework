@@ -4,11 +4,12 @@
     @if $slot == "idle" {}
     @if $slot == "selected" {}
     @if $slot == "hover" {}
-    @if $slot == "focusWithin" {}
-    @if $slot == "focus" {}
-    @if $slot == "pressed" {}
     @if $slot == "active" {}
     @if $slot == "highlighted" {}
+    @if $slot == "focusWithin" {}
+    @if $slot == "focus" {}
+    @if $slot == "error" {}
+    @if $slot == "pressed" {}
     @if $slot == "disabled" {}
 }
 
