@@ -101,7 +101,9 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
             ...(key === "default" ? newState : {}),
         }))
 
-        keysOf(stateDefinition).sort((a, b) => COMPONENT_STATE_ORDER.indexOf(a) - COMPONENT_STATE_ORDER.indexOf(b)).forEach(k => el.classList[newState[k] ? "add" : "remove"](k))
+        keysOf(stateDefinition)
+            .sort((a, b) => COMPONENT_STATE_ORDER.indexOf(b) - COMPONENT_STATE_ORDER.indexOf(a))
+            .forEach(k => el.classList[newState[k] ? "add" : "remove"](k))
 
         onStateChange?.(newState, key)
 
