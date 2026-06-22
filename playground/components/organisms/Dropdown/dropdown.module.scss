@@ -44,21 +44,6 @@
             color: token("fg-hover");
         }
     }
-    @if $slot == "focusWithin" {
-        .button {
-            border: solid unit(0.2) token("border-focus-within");
-        }
-    }
-    @if $slot == "focus" {
-        .button {
-            outline: solid unit(0.2) token("outline-focus");
-        }
-    }
-    @if $slot == "pressed" {
-        .button {
-            background-color: token("bg-pressed");
-        }
-    }
     @if $slot == "active" {
         z-index: 10;
         filter: drop-shadow(0 0 unit(0.5) token("shadow-active"));
@@ -74,6 +59,26 @@
     @if $slot == "highlighted" {
         .button {
             background-color: token("bg-highlighted");
+        }
+    }
+    @if $slot == "focusWithin" {
+        .button {
+            border: solid unit(0.2) token("border-focus-within");
+        }
+    }
+    @if $slot == "focus" {
+        .button {
+            outline: solid unit(0.2) token("outline-focus");
+        }
+    }
+    @if $slot == "error" {
+        .button {
+            color: token("fg-error");
+        }
+    }
+    @if $slot == "pressed" {
+        .button {
+            background-color: token("bg-pressed");
         }
     }
     @if $slot == "disabled" {

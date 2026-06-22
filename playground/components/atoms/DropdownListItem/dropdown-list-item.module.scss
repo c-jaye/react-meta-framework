@@ -28,20 +28,25 @@
             color: token("fg-hover");
         }
     }
+    @if $slot == "active" {
+        background: token("bg-active");
+    }
+    @if $slot == "highlighted" {
+        background: token("bg-highlighted");
+    }
     @if $slot == "focusWithin" {
         border: solid unit(0.2) token("border-focusWithin");
     }
     @if $slot == "focus" {
         outline: solid unit(0.2) token("border-focus");
     }
+    @if $slot == "error" {
+        .text {
+            color: token("fg-error");
+        }
+    }
     @if $slot == "pressed" {
         background: token("bg-pressed");
-    }
-    @if $slot == "active" {
-        background: token("bg-active");
-    }
-    @if $slot == "highlighted" {
-        background: token("bg-highlighted");
     }
     @if $slot == "disabled" {
         user-select: none;
