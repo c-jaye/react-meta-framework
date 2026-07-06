@@ -5,11 +5,13 @@ import type { THEME } from "@/const/state"
 export type ComponentState<T extends Obj<boolean | undefined> = Obj<boolean | undefined>> = Obj<boolean | undefined> & {
     selected?: boolean | undefined
     hover?: boolean | undefined
-    focusWithin?: boolean | undefined
-    focus?: boolean | undefined
-    pressed?: boolean | undefined
     active?: boolean | undefined
     highlighted?: boolean | undefined
+    focusNavigation?: boolean | undefined
+    focusWithin?: boolean | undefined
+    focus?: boolean | undefined
+    error?: boolean | undefined
+    pressed?: boolean | undefined
     disabled?: boolean | undefined
 } & {
     [K in keyof T]?: boolean | undefined
