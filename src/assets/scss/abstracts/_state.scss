@@ -16,6 +16,10 @@
     #{$_selector}:global(.highlighted) { @content; }
 }
 
+@mixin focusNavigation($_selector) {
+    #{$_selector}:global(.focusNavigation) { @content; }
+}
+
 @mixin focusWithin($_selector) {
     #{$_selector}:global(.focusWithin) { @content; }
 }
@@ -42,6 +46,7 @@
     @include hover($_selector) { @content("hover"); }
     @include active($_selector) { @content("active"); }
     @include highlighted($_selector) { @content("highlighted"); }
+    @include focusNavigation($_selector) { @content("focusNavigation"); }
     @include focusWithin($_selector) { @content("focusWithin"); }
     @include focus($_selector) { @content("focus"); }
     @include error($_selector) { @content("error"); }

@@ -37,7 +37,6 @@
             transition: all 0.2s ease;
         }
     }
-
     @if $slot == "selected" {}
     @if $slot == "hover" {
         .button {
@@ -60,6 +59,9 @@
         .button {
             background-color: token("bg-highlighted");
         }
+    }
+    @if $slot == "focusNavigation" {
+        outline: solid unit(0.2) token("accent5");
     }
     @if $slot == "focusWithin" {
         .button {
