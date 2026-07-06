@@ -26,7 +26,6 @@
             opacity: 0;
         }
     }
-
     @if $slot == "selected" {
         background-color: token("bg-selected");
     }
@@ -49,6 +48,9 @@
     }
     @if $slot == "highlighted" {
         background-color: token("bg-highlighted");
+    }
+    @if $slot == "focusNavigation" {
+        outline: solid unit(0.2) token("accent5");
     }
     @if $slot == "focusWithin" {
         border: solid unit(0.2) token("border-focus-within");

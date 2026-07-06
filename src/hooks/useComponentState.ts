@@ -41,7 +41,7 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
         }
 
         if (state.disabled) {
-            state.focus = state.focusWithin = state.active = state.selected = false
+            state.focusNavigation = state.focusWithin = state.focus = state.active = state.selected = false
         }
 
         return state
@@ -180,25 +180,32 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
                 if (isTouch || !isIn(stateDefinition, "hover")) return
                 updateState({ hover: true }, key)
             },
-            focus: () => {
-                if (!isIn(stateDefinition, "focus")) return
-                updateState({ focus: true }, key)
+            focus: (ev: Event) => {
+                if (isIn(stateDefinition, "focusNavigation") && (ev.target as HTMLElement)?.matches?.(":focus-visible")) {
+                    updateState({ focusNavigation: true }, key)
+                }
+                if (isIn(stateDefinition, "focus")) {
+                    updateState({ focus: true }, key)
+                }
             },
-            focusin: () => {
-                if (!isIn(stateDefinition, "focusWithin")) return
-                updateState({ focusWithin: true }, key)
+            focusin: (ev: Event) => {
+                if (isIn(stateDefinition, "focusNavigation") && (ev.target as HTMLElement)?.matches?.(":focus-visible")) {
+                    updateState({ focusNavigation: true }, key)
+                }
+                if (isIn(stateDefinition, "focusWithin")) {
+                    updateState({ focusWithin: true }, key)
+                }
             },
             focusout: () => {
                 const active = document.activeElement
-                let shouldFocusWithinOut = false
-
-                if (isIn(stateDefinition, "focusWithin")) {
-                    if (!refs.current[key]?.contains(active) && refs.current[key] !== active && refs.current[key] !== active) {
-                        shouldFocusWithinOut = true
-                    }
+                if (isIn(stateDefinition, "focusNavigation")) {
+                    updateState({ focusNavigation: false }, key)
+                }
+                if (isIn(stateDefinition, "focusWithin") && !refs.current[key]?.contains(active) && refs.current[key] !== active && refs.current[key] !== active) {
+                    updateState({ focusWithin: false }, key)
                 }
                 if (isIn(stateDefinition, "focus")) {
-                    updateState({ focus: false, focusWithin: shouldFocusWithinOut ? false : undefined }, key)
+                    updateState({ focus: false }, key)
                 }
             },
         }
@@ -265,11 +272,11 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
 
         const s: ComponentState = {}
 
-        if (isIn(stateDefinition, "focus")) {
-            s.focus = node === document.activeElement
-        }
         if (isIn(stateDefinition, "focusWithin")) {
             s.focusWithin = node === document.activeElement || node.contains(document.activeElement)
+        }
+        if (isIn(stateDefinition, "focus")) {
+            s.focus = node === document.activeElement
         }
         if (isIn(stateDefinition, "disabled")) {
             s.disabled = isIn(node, "disabled") && !!node.disabled
