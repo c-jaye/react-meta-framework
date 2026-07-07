@@ -19,6 +19,7 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
     const listeners = useRef<Obj<Obj<EventListener>>>({})
     const observers = useRef<Obj<MutationObserver>>({})
     const refreshTimes = useRef<Obj<number>>({})
+    const focusTimes = useRef<Obj<number>>({})
     const queuedState = useRef<Obj<Partial<ComponentState<S>>>>({})
     const overrides = useRef<Obj<Partial<ComponentState<S>>>>({})
 
@@ -71,9 +72,7 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
         const rt2 = refreshTimes.current[key] = Date.now()
         const delay = Math.max(rt2 + 8 - Date.now(), 0)
 
-        if (!!delay) {
-            void await wait(delay)
-        }
+        if (!!delay) void await wait(delay)
 
         refreshTimes.current[key] = 0
         const el = refs.current[key]!
@@ -112,8 +111,20 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
         if (isIn(el, "disabled") && el.disabled !== newState.disabled) {
             el.disabled = !!newState.disabled
         }
+
         if (newState.focus && el !== document.activeElement && !prevState.focus) {
-            el.focus()
+            const rt = focusTimes.current[key] ?? 0
+
+            if (!!rt) return
+
+            const rt2 = focusTimes.current[key] = Date.now()
+            const delay = Math.max(rt2 + 8 - Date.now(), 0)
+
+            if (!!delay) void await wait(delay)
+
+            if (rt === focusTimes.current[key]) {
+                el.focus()
+            }
         }
         if (!newState.focus && el === document.activeElement && prevState.focus) {
             el.blur()
@@ -201,7 +212,7 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
                 if (isIn(stateDefinition, "focusNavigation")) {
                     updateState({ focusNavigation: false }, key)
                 }
-                if (isIn(stateDefinition, "focusWithin") && !refs.current[key]?.contains(active) && refs.current[key] !== active && refs.current[key] !== active) {
+                if (isIn(stateDefinition, "focusWithin") && !refs.current[key]?.contains(active) && refs.current[key] !== active) {
                     updateState({ focusWithin: false }, key)
                 }
                 if (isIn(stateDefinition, "focus")) {
