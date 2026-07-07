@@ -1,0 +1,50 @@
+@use "../assets/scss/main.scss" as *;
+
+.storyTools {
+    height: 100%;
+    width: max-content;
+    display: grid;
+    place-items: start;
+    gap: unit(16);
+    padding: unit(16);
+    overflow: visible;
+
+    .section {
+        display: grid;
+        place-items: start;
+        grid-auto-flow: row;
+        grid-auto-columns: 1fr;
+        grid-template-rows: max-content;
+        gap: unit(4);
+    }
+
+    .components {
+        display: grid;
+        place-items: start;
+        gap: unit(16);
+    }
+
+    &.column {
+        grid-auto-flow: column;
+        grid-auto-columns: 1fr;
+        grid-template-rows: max-content;
+
+        .components {
+            grid-auto-flow: row;
+            grid-auto-columns: 1fr;
+            grid-template-rows: max-content;
+        }
+    }
+
+    &.row {
+        grid-auto-flow: row;
+        grid-template-columns: max-content;
+        grid-auto-rows: 1fr;
+
+        .components {
+            grid-auto-flow: column;
+            grid-template-columns: max-content;
+            grid-auto-rows: 1fr;
+        }
+    }
+}

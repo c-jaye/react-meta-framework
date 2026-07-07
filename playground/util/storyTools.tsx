@@ -1,58 +1,52 @@
-import type { Meta, StoryObj } from "@storybook/react-vite"
-import { deepMerge, keysOf, titleCase } from "@cjaye/utils"
+import { type KeyOf, arr, keysOf, titleCase } from "@cjaye/utils"
+import type { Meta, StoryContext, StoryObj } from "@storybook/react-vite"
 import type { BaseProps } from "@/types"
 import { DEFAULT_COMPONENT_STATE } from "@/const/state"
 import type { FC } from "react"
-import type { KeyOf } from "@cjaye/utils"
-import { unit } from "~/assets/scss"
+import classNames from "classnames"
+
+import scss from "./story-tools.module.scss"
 
 export function generateStateStory<T extends BaseProps>(
     meta: Meta<T>,
-    state?: "all" | "idle" | KeyOf<typeof DEFAULT_COMPONENT_STATE>,
+    options?: {
+        states?: (KeyOf<typeof DEFAULT_COMPONENT_STATE> | "idle" | "all")[]
+        direction?: "column" | "row"
+        copies?: number
+    },
 ): StoryObj<typeof meta> {
     return {
-        render: state === "all"
-            ? (args: T) => {
-                const Component = meta.component as FC<T>
-                return (
-                    <div style={{
-                        display: "grid",
-                        height: "100%",
-                        width: "max-content",
-                        gridAutoFlow: "column",
-                        gridAutoColumns: "1fr",
-                        gridTemplateRows: "max-content max-content",
-                        placeItems: "start",
-                        gap: unit(4),
-                        padding: unit(4),
-                        overflow: "visible",
-                    }}
-                    >
-                        <label className="prose">
-                            <span>Idle</span>
-                        </label>
-                        <Component {...args} />
-                        {keysOf(DEFAULT_COMPONENT_STATE).map(s => (
-                            <>
-                                <label className="prose">
+        render: (args: T, _context: StoryContext<T>) => {
+            const Component = meta.component as FC<T>
+            return (
+                <div className={classNames(scss.storyTools, {
+                    column: scss.column,
+                    row: scss.row,
+                }[options?.direction ?? "column"])}
+                >
+                    {((["idle", ...keysOf(DEFAULT_COMPONENT_STATE)] as (KeyOf<typeof DEFAULT_COMPONENT_STATE> | "idle" | "all")[])
+                        .filter(s => !options?.states?.length || options?.states?.includes("all") || options?.states?.includes(s))
+                        .map(s => (
+                            <div key={s} className={scss.section}>
+                                <label
+                                    key={`${s}-label`}
+                                    className="rmf-prose"
+                                >
                                     <span>{titleCase(s)}</span>
                                 </label>
-                                <Component
-                                    {...args}
-                                    stateProps={{ stateOverride: { [s]: true } }}
-                                />
-                            </>
-                        ))}
-                    </div>
-                )
-            }
-            : meta.render,
-        args: state && !["all", "idle"].includes(state)
-            ? deepMerge(meta.args, {
-                stateProps: {
-                    stateOverride: { [state]: true },
-                },
-            })
-            : meta.args,
+                                <div className={scss.components}>
+                                    {arr(options?.copies ?? 1).map((_, i) => (
+                                        <Component
+                                            key={`${s}-${i}`}
+                                            {...args}
+                                            stateProps={{ stateOverride: { [s]: true } }}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        )))}
+                </div>
+            )
+        },
     } as StoryObj<typeof meta>
 }
