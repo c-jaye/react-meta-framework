@@ -41,6 +41,10 @@ export default tseslint.config({
         "@typescript-eslint/prefer-nullish-coalescing": ["error", {
             ignoreBooleanCoercion: true,
         }],
+        "@typescript-eslint/no-unused-vars": ["error", {
+            argsIgnorePattern: "^_",
+            varsIgnorePattern: "^_",
+        }],
         "import-x/default": ["off"],
         "import-x/no-dynamic-require": ["error"],
         "import-x/no-nodejs-modules": ["warn"],
