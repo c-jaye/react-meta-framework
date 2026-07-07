@@ -1,5 +1,6 @@
-import { type BaseProps, type KeyOf, arr, keysOf, titleCase } from "@cjaye/react-meta-framework"
+import { type KeyOf, arr, keysOf, titleCase } from "@cjaye/utils"
 import type { Meta, StoryContext, StoryObj } from "@storybook/react-vite"
+import type { BaseProps } from "@/types"
 import { DEFAULT_COMPONENT_STATE } from "@/const/state"
 import type { FC } from "react"
 import classNames from "classnames"
