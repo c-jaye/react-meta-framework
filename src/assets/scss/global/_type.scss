@@ -40,18 +40,20 @@ $const-fonts: () !default;
   font-language-override: normal;
   font-stretch: normal;
 
-  text-decoration-skip-ink: auto;
-  text-decoration-skip-ink: all;
-  text-align: start;
-  text-wrap: pretty;
-  overflow-wrap: break-word;
-  text-overflow: ellipsis;
-  white-space: normal;
-  white-space-collapse: collapse;
-  line-break: normal;
-  word-break: normal;
-  word-spacing: normal;
-  hyphenate-character: auto;
+  hyphenate-character: inherit;
+  line-break: inherit;
+  overflow: inherit;
+  overflow-wrap: inherit;
+  text-align: inherit;
+  text-decoration-skip-ink: inherit;
+  text-decoration-skip-ink: inherit;
+  text-overflow: inherit;
+  text-transform: inherit;
+  text-wrap: inherit;
+  white-space: inherit;
+  white-space-collapse: inherit;
+  word-break: inherit;
+  word-spacing: inherit;
 }
 
 @mixin buildProse {
@@ -66,8 +68,11 @@ $const-fonts: () !default;
     width: 100%;
     display: grid;
     place-items: start stretch;
+    color: inherit;
 
     & * {
+      color: inherit;
+      
       overflow-inline: visible;
       display: block;
       padding-top: $calc_lineOffsetTop;
