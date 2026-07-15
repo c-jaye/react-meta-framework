@@ -122,8 +122,9 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
 
             if (!!delay) void await wait(delay)
 
-            if (rt === focusTimes.current[key]) {
+            if (rt2 === focusTimes.current[key]) {
                 el.focus()
+                focusTimes.current[key] = 0
             }
         }
         if (!newState.focus && el === document.activeElement && prevState.focus) {
@@ -321,6 +322,8 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
             })
 
         if (!changedKeys.length) return
+
+        overrides.current = o
 
         changedKeys.forEach((key) => {
             const newState = deepMerge(

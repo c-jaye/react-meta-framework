@@ -6,6 +6,8 @@
         ::before,
         ::after
     ) {
+        &:focus-visible { outline: none; }
+
         all: initial;
         
         // BEHAVIOUR
@@ -26,9 +28,9 @@
         -webkit-text-security: unset;
         -moz-user-focus: none;
         -moz-user-input: auto;
-        overscroll-behavior: contain;
-        overscroll-behavior-block: contain;
-        overscroll-behavior-inline: contain;
+        overscroll-behavior: auto;
+        overscroll-behavior-block: auto;
+        overscroll-behavior-inline: auto;
         cursor: auto;
         pointer-events: auto;
         touch-action: manipulation;
@@ -39,6 +41,7 @@
 
         // CONTENT
         // Generated
+        content: unset;
         quotes: none;
 
         // Lists
