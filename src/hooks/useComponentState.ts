@@ -103,10 +103,12 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
         const allSortedStates = keysOf(stateDefinition)
             .sort((a, b) => COMPONENT_STATE_ORDER.indexOf(a) - COMPONENT_STATE_ORDER.indexOf(b))
 
-        allSortedStates.forEach(k => el.classList.remove(k))
-        allSortedStates.forEach(k => el.classList[newState[k] ? "add" : "remove"](k))
+        allSortedStates.forEach(k => el?.classList.remove(k))
+        allSortedStates.forEach(k => el?.classList[newState[k] ? "add" : "remove"](k))
 
         onStateChange?.(newState, key)
+
+        if (!el) return
 
         if (isIn(el, "disabled") && el.disabled !== newState.disabled) {
             el.disabled = !!newState.disabled
@@ -145,13 +147,6 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
         const ref = refs.current[key]!
         const observer = observers.current[key]
 
-        if (isFunc<void, [HTMLElement | SVGElement | null]>(parentRef)) {
-            parentRef?.(node)
-        }
-        else if (isIn(parentRef, "current")) {
-            (parentRef.current as Mutable<HTMLElement | SVGElement | null>) = node
-        }
-
         if (ref && node && ref !== node) {
             const l = listeners.current[key]
 
@@ -163,17 +158,30 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
             node.removeEventListener("focus", l.focus)
             node.removeEventListener("focusin", l.focusin)
             node.removeEventListener("focusout", l.focusout)
-            node.removeAttribute("data-rms")
 
             delete listeners.current[key]
             delete refs.current[key]
             delete states.current[key]
             delete observers.current[key]
+
+            if (isFunc<void, [HTMLElement | SVGElement | null]>(parentRef)) {
+                parentRef?.(null)
+            }
+            else if (isIn(parentRef, "current")) {
+                (parentRef.current as Mutable<HTMLElement | SVGElement | null>) = null
+            }
         }
 
         if (!node || ref === node) return
 
         refs.current[key] = node
+
+        if (isFunc<void, [HTMLElement | SVGElement | null]>(parentRef)) {
+            parentRef?.(node)
+        }
+        else if (isIn(parentRef, "current")) {
+            (parentRef.current as Mutable<HTMLElement | SVGElement | null>) = node
+        }
 
         const l = listeners.current[key] = {
             pointerup: () => {

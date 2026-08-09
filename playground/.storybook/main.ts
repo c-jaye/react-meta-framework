@@ -17,7 +17,7 @@ const config = defineMain({
         "@storybook/addon-designs",
         "@storybook/addon-a11y",
         "@chromatic-com/storybook",
-        ...(process.env.npm_lifecycle_event !== "dev:storybook"
+        ...(process.env.npm_lifecycle_event === "dev:storybook"
             ? [import.meta.resolve("./localPreset.ts")]
             : [
                 "@cjaye/react-meta-framework/addons/state",
