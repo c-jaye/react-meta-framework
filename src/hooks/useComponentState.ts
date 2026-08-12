@@ -1,12 +1,14 @@
 import { COMPONENT_STATE_ORDER, DEFAULT_COMPONENT_STATE } from "@/const/state"
-import type { ComponentState, ComponentStateProps } from "@/types"
+import type { ComponentState, ComponentStateProps, UseComponentStateReturn } from "@/types"
 import { type Mutable, type Obj, deepMerge, deepMergeAll, entriesOf, fromJson, isBool, isFunc, isIn, keysOf, wait } from "@cjaye/utils"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { nextFocusable } from "@/util/dom"
 
 export default function useComponentState<S extends Obj<boolean | undefined> = ComponentState>(
     options?: ComponentStateProps<S> & { utiliseTouch?: boolean },
 ) {
     const {
+        stateRef,
         ref: parentRef,
         stateDefinition = DEFAULT_COMPONENT_STATE,
         onStateChange,
@@ -19,7 +21,6 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
     const listeners = useRef<Obj<Obj<EventListener>>>({})
     const observers = useRef<Obj<MutationObserver>>({})
     const refreshTimes = useRef<Obj<number>>({})
-    const focusTimes = useRef<Obj<number>>({})
     const queuedState = useRef<Obj<Partial<ComponentState<S>>>>({})
     const overrides = useRef<Obj<Partial<ComponentState<S>>>>({})
 
@@ -49,15 +50,16 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
     }, [])
 
     const refresh = useCallback(async (key = "default") => {
-        normaliseState(queuedState.current[key])
-
-        const attributeState = getAttributeState(key)
+        const rt = refreshTimes.current[key] = Date.now()
+        void await wait(8)
+        if (rt !== refreshTimes.current[key]) return
+        refreshTimes.current[key] = 0
 
         const allStates = normaliseState(deepMergeAll(
             states.current[key],
             queuedState.current[key] ?? {},
             overrides.current?.[key] ?? {},
-            attributeState,
+            getAttributeState(key),
         ))
 
         if (keysOf(allStates).every(k => allStates[k] === states.current[key]?.[k])) {
@@ -65,17 +67,7 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
             return
         }
 
-        const rt = refreshTimes.current[key] ?? 0
-
-        if (!!rt) return
-
-        const rt2 = refreshTimes.current[key] = Date.now()
-        const delay = Math.max(rt2 + 8 - Date.now(), 0)
-
-        if (!!delay) void await wait(delay)
-
-        refreshTimes.current[key] = 0
-        const el = refs.current[key]!
+        const el = refs.current[key]
 
         const innerState = deepMerge(
             states.current[key],
@@ -85,7 +77,7 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
         const newState = normaliseState(deepMergeAll(
             innerState,
             overrides.current?.[key] ?? {},
-            attributeState,
+            getAttributeState(key),
         ))
 
         const prevState = states.current[key]
@@ -110,27 +102,16 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
 
         if (!el) return
 
-        if (isIn(el, "disabled") && el.disabled !== newState.disabled) {
-            el.disabled = !!newState.disabled
+        if (isIn(el, "disabled") && el.disabled !== prevState.disabled) {
+            el.disabled = !!prevState.disabled
         }
 
-        if (newState.focus && el !== document.activeElement && !prevState.focus) {
-            const rt = focusTimes.current[key] ?? 0
-
-            if (!!rt) return
-
-            const rt2 = focusTimes.current[key] = Date.now()
-            const delay = Math.max(rt2 + 8 - Date.now(), 0)
-
-            if (!!delay) void await wait(delay)
-
-            if (rt2 === focusTimes.current[key]) {
-                el.focus()
-                focusTimes.current[key] = 0
-            }
+        const focusableEl = nextFocusable(el.parentElement)
+        if (newState.focus && !prevState.focus && focusableEl !== document.activeElement) {
+            focusableEl?.focus()
         }
-        if (!newState.focus && el === document.activeElement && prevState.focus) {
-            el.blur()
+        else if (!newState.focus && prevState.focus && focusableEl === document.activeElement) {
+            focusableEl?.blur()
         }
     }, [getAttributeState, normaliseState, onStateChange, stateDefinition])
 
@@ -221,7 +202,7 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
                 if (isIn(stateDefinition, "focusNavigation")) {
                     updateState({ focusNavigation: false }, key)
                 }
-                if (isIn(stateDefinition, "focusWithin") && !refs.current[key]?.contains(active) && refs.current[key] !== active) {
+                if (isIn(stateDefinition, "focusWithin") && (!active || (!refs.current[key]?.contains(active) && refs.current[key] !== active))) {
                     updateState({ focusWithin: false }, key)
                 }
                 if (isIn(stateDefinition, "focus")) {
@@ -293,10 +274,10 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
         const s: ComponentState = {}
 
         if (isIn(stateDefinition, "focusWithin")) {
-            s.focusWithin = node === document.activeElement || node.contains(document.activeElement)
+            s.focusWithin = !!document.activeElement && (node === document.activeElement || node.contains(document.activeElement))
         }
         if (isIn(stateDefinition, "focus")) {
-            s.focus = node === document.activeElement
+            s.focus = !!document.activeElement && node === document.activeElement
         }
         if (isIn(stateDefinition, "disabled")) {
             s.disabled = isIn(node, "disabled") && !!node.disabled
@@ -351,10 +332,16 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [stateOverride])
 
-    return {
+    const returnData: UseComponentStateReturn<S> = {
         ref: getRef,
         refs: refs,
         state: finalState,
         updateState,
     }
+
+    if (stateRef) {
+        stateRef.current = returnData
+    }
+
+    return returnData
 }

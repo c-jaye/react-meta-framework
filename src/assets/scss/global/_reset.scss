@@ -4,7 +4,8 @@
     *:where(
         :not(svg *),
         ::before,
-        ::after
+        ::after,
+        ::backdrop
     ) {
         &:focus-visible { outline: none; }
 

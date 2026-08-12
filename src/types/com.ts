@@ -1,6 +1,13 @@
-import { type ComponentPropsWithRef, type ElementType, type PropsWithChildren, type Ref } from "react"
-import type { Obj } from "@cjaye/utils"
+import { type ComponentPropsWithRef, type ElementType, type MutableRefObject, type PropsWithChildren, type Ref } from "react"
+import type { Maybe, Obj } from "@cjaye/utils"
 import type { THEME } from "@/const/state"
+
+export interface UseComponentStateReturn<S extends Obj<boolean | undefined> = ComponentState> {
+    ref: (node: HTMLElement | SVGElement | null, key?: string) => void
+    refs: MutableRefObject<Obj<HTMLElement | SVGElement | null>>
+    state: ComponentState<S>
+    updateState: (patch: Partial<ComponentState<S>>, key?: string) => void
+}
 
 export type ComponentState<T extends Obj<boolean | undefined> = Obj<boolean | undefined>> = Obj<boolean | undefined> & {
     selected?: boolean | undefined
@@ -25,6 +32,7 @@ export interface ComponentStateProps<
     stateOverride?: { [K in keyof ComponentState<S>]?: boolean | Obj<boolean | undefined> }
     onStateChange?: (state: ComponentState<S>, key: string) => void
     ref?: E
+    stateRef?: MutableRefObject<Maybe<UseComponentStateReturn<S>>>
 }
 
 export type BaseProps<
