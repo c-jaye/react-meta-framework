@@ -1,5 +1,5 @@
 import { COMPONENT_STATE_ORDER, DEFAULT_COMPONENT_STATE } from "@/const/state"
-import type { ComponentState, ComponentStateProps } from "@/types"
+import type { ComponentState, ComponentStateProps, UseComponentStateReturn } from "@/types"
 import { type Mutable, type Obj, deepMerge, deepMergeAll, entriesOf, fromJson, isBool, isFunc, isIn, keysOf, wait } from "@cjaye/utils"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { nextFocusable } from "@/util/dom"
@@ -8,6 +8,7 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
     options?: ComponentStateProps<S> & { utiliseTouch?: boolean },
 ) {
     const {
+        stateRef,
         ref: parentRef,
         stateDefinition = DEFAULT_COMPONENT_STATE,
         onStateChange,
@@ -20,7 +21,6 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
     const listeners = useRef<Obj<Obj<EventListener>>>({})
     const observers = useRef<Obj<MutationObserver>>({})
     const refreshTimes = useRef<Obj<number>>({})
-    const focusTimes = useRef<Obj<number>>({})
     const queuedState = useRef<Obj<Partial<ComponentState<S>>>>({})
     const overrides = useRef<Obj<Partial<ComponentState<S>>>>({})
 
@@ -332,10 +332,16 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [stateOverride])
 
-    return {
+    const returnData: UseComponentStateReturn<S> = {
         ref: getRef,
         refs: refs,
         state: finalState,
         updateState,
     }
+
+    if (stateRef) {
+        stateRef.current = returnData
+    }
+
+    return returnData
 }

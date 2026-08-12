@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import type { DropdownProps } from "./types"
 import type { JSONPrimitive } from "@cjaye/utils"
+import type { UseComponentStateReturn } from "@/types"
 import classNames from "classnames"
 import useComponentState from "@/hooks/useComponentState"
 
@@ -19,10 +20,9 @@ export const Dropdown = <T extends JSONPrimitive = JSONPrimitive>({
     const { ref, state, updateState } = useComponentState({
         ...stateProps,
         onStateChange: (s, k) => {
-            if (!s.focusWithin) {
-                updateState({ active: false })
-            }
+            if (!s.focusWithin) updateState({ active: false })
             updateButtonState({ disabled: s.disabled })
+            listState.current?.updateState({ active: s.active, focus: s.active, disabled: s.disabled })
             stateProps?.onStateChange?.(s, k)
         },
     })
@@ -32,6 +32,8 @@ export const Dropdown = <T extends JSONPrimitive = JSONPrimitive>({
     })
 
     const { ref: searchRef } = useComponentState()
+
+    const listState = useRef<UseComponentStateReturn>()
 
     const [selectedValue, setSelectedValue] = useState<T | null>(value)
     const [term, setTerm] = useState("")
@@ -79,13 +81,7 @@ export const Dropdown = <T extends JSONPrimitive = JSONPrimitive>({
                     updateButtonState({ focus: true })
                     ev.preventDefault()
                 }}
-                stateProps={{
-                    stateOverride: {
-                        active: state.active,
-                        focus: state.active,
-                        disabled: state.disabled,
-                    },
-                }}
+                stateProps={{ stateRef: listState }}
             />
         </div>
     )
