@@ -1,13 +1,14 @@
 import type { JSONPrimitive, LabelValue } from "@cjaye/utils"
-import { useCallback, useEffect, useState } from "react"
+import { type KeyboardEvent, useCallback, useEffect, useState } from "react"
 import { useComponentState, useOptionsSearch } from "@/hooks"
 import type { DropdownListProps } from "./types"
 import classNames from "classnames"
+import { stringOrJson } from "@/util"
+import useComponent from "@/hooks/useComponent"
 
 import DropdownListItem from "~/components/DropdownListItem"
 
 import scss from "./dropdown-list.module.scss"
-import { toJson } from "@cjaye/utils"
 
 export const DropdownList = <T extends JSONPrimitive = JSONPrimitive>({
     items = [],
@@ -21,7 +22,7 @@ export const DropdownList = <T extends JSONPrimitive = JSONPrimitive>({
     ...props
 }: DropdownListProps<T>) => {
     const { ref } = useComponentState(stateProps)
-    const { ref: itemRef, refs: itemRefs } = useComponentState()
+    const { ref: itemRef, refs: itemRefs, updateStates: updateItemStates } = useComponent()
 
     const [selectedValue, setSelectedValue] = useState<T | null>(value)
     const [highlightedValue, setHighlightedValue] = useState<T | null>(value)
@@ -39,7 +40,7 @@ export const DropdownList = <T extends JSONPrimitive = JSONPrimitive>({
         getTerms: item => item.label,
         onMatch: (item) => {
             setHighlightedValue(item.value)
-            itemRefs.current[toJson(item.value)]!.scrollIntoView({
+            itemRefs.current?.[stringOrJson(item.value)]?.scrollIntoView({
                 inline: "center",
                 block: "center",
                 behavior: "smooth",
@@ -49,7 +50,7 @@ export const DropdownList = <T extends JSONPrimitive = JSONPrimitive>({
         onSearch,
     })
 
-    const onKey = useCallback((ev: React.KeyboardEvent<HTMLDivElement>) => {
+    const onKey = useCallback((ev: KeyboardEvent<HTMLDivElement>) => {
         if (["ArrowUp", "ArrowDown"].includes(ev.key)) {
             const index = highlightedValue
                 ? Math.max(items.findIndex(x => x.value === highlightedValue), 0)
@@ -57,7 +58,7 @@ export const DropdownList = <T extends JSONPrimitive = JSONPrimitive>({
             const offset = ev.key === "ArrowUp" ? -1 : 1
             const value = items[Math.min(Math.max(index + offset, 0), items.length - 1)].value
             setHighlightedValue(value)
-            itemRefs.current[toJson(value)]!.scrollIntoView({
+            itemRefs.current?.[stringOrJson(value)]?.scrollIntoView({
                 inline: "center",
                 block: "center",
                 behavior: "smooth",
@@ -78,10 +79,13 @@ export const DropdownList = <T extends JSONPrimitive = JSONPrimitive>({
     }, [onSearchInput, onKeyDown, highlightedValue, items, itemRefs, onSelection])
 
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSelectedValue(value)
         setHighlightedValue(value)
     }, [value])
+
+    useEffect(() => {
+        updateItemStates(k => ({ highlighted: k === highlightedValue && k !== selectedValue }))
+    }, [highlightedValue, selectedValue, updateItemStates])
 
     return (
         <div
@@ -95,17 +99,13 @@ export const DropdownList = <T extends JSONPrimitive = JSONPrimitive>({
                 <DropdownListItem
                     {...props}
                     className={classNames(scss.dropdownListItem)}
-                    key={toJson(v)}
+                    key={stringOrJson(v)}
                     value={v}
                     selected={v === selectedValue}
-                    onSelection={v => onSelection(v)}
+                    onSelection={onSelection}
                     stateProps={{
                         ...props.stateProps,
-                        ref: el => itemRef(el, toJson(v)),
-                        stateOverride: {
-                            ...props.stateProps?.stateOverride,
-                            highlighted: v === highlightedValue && v !== selectedValue,
-                        },
+                        stateRef: x => itemRef(x, stringOrJson(v)),
                     }}
                 />
             ))}
