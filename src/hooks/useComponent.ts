@@ -10,7 +10,11 @@ export default function useComponent<S extends Obj<boolean | undefined> = Compon
     const ref = useCallback((data: Maybe<UseComponentStateReturn<S>>, key = "default") => {
         innerRefs.current[key] = data
         refs.current[key] = data?.refs.current?.default
-        state.current = deepMergeAll(state.current, innerRefs.current.default?.state, { [key]: data?.state ?? {} })
+        state.current = deepMergeAll(
+            state.current,
+            innerRefs.current.default?.state,
+            { [key]: data?.state ?? {} } as ComponentState<S>,
+        )
     }, [])
 
     const updateState = useCallback((patch: Partial<ComponentState<S>>, key = "default") => {
