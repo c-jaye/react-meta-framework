@@ -5,7 +5,7 @@ import { defineMain } from "@storybook/react-vite/node"
 import dotenv from "dotenv"
 import { mergeConfig } from "vite"
 import { resolve } from "path"
-import tokenGenerator from "../../src/plugins/tokenGenerator"
+import tokenGenerator from "../../src/plugins/tokenGenerator.ts"
 import tsconfigPaths from "vite-tsconfig-paths"
 import { writeFile } from "fs/promises"
 
