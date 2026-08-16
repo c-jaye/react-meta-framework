@@ -1,6 +1,6 @@
 /* eslint-disable import-x/no-nodejs-modules */
 
-import { buildTokens } from "../src/util/generation"
+import { buildTokens } from "../src/util"
 import { resolve } from "path"
 import { writeFile } from "fs/promises"
 
