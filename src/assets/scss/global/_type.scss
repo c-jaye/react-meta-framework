@@ -2,68 +2,152 @@
 @use "sass:list";
 
 @use "../abstracts/type" as *;
+@use "../abstracts/util" as *;
 @use "../vars/vars" as *;
 $const-fonts: () !default;
 
 @mixin buildBase {
+  direction: ltr;
   -webkit-font-smoothing: subpixel-antialiased;
   font-smooth: subpixel-antialiased;
   text-rendering: optimizeLegibility;
+  unicode-bidi: normal;
+  writing-mode: horizontal-tb;
+  
+  -webkit-text-fill-color: currentColor;
+  -webkit-text-stroke-color: currentColor;
+  -webkit-tap-highlight-color: currentColor;
+  caret-color: currentColor;
+  color: currentColor;
 
-  font-family:
-    Inter,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Open Sans',
-    'Helvetica Neue',
-    sans-serif;
-  font-weight: inherit;
-  font-style: inherit;
+  font-family: $v-fontFamily;
+  font-weight: $v-fontWeight;
+  font-style: $v-fontStyle;
 
-  font-size: inherit;
-  letter-spacing: inherit;
-  line-height: inherit;
+  font-size: 16px;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: none;
 
-  font-synthesis: weight style small-caps position;
+  font-synthesis: none;
   font-variant: normal;
   font-feature-settings: normal;
-  font-kerning: normal;
+  font-kerning: auto;
   font-optical-sizing: auto;
   font-variation-settings: normal;
   font-size-adjust: none;
   font-language-override: normal;
   font-stretch: normal;
+  
+  text-align: start;
+  text-align-last: auto;
+  text-orientation: mixed;
+  text-justify: inter-word;
+  
+  overflow: auto;
+  text-overflow: ellipsis;
+  white-space: normal;
+  white-space-collapse: collapse;
+  
+  line-clamp: none;
+  overflow-wrap: break-word;
+  text-wrap: wrap pretty;
+  
+  line-break: auto;
+  word-break: break-word;
+  word-spacing: normal;
+  
+  hyphens: auto;
+  hyphenate-character: "-";
+  hyphenate-limit-chars: 5;
+  
+  tab-size: 8;
+  text-indent: 0;
 
-  hyphenate-character: inherit;
-  line-break: inherit;
-  overflow: inherit;
-  overflow-wrap: inherit;
-  text-align: inherit;
-  text-decoration-skip-ink: inherit;
-  text-decoration-skip-ink: inherit;
-  text-overflow: inherit;
+  text-decoration: none solid auto;
+  text-decoration-color: currentColor;
+  text-decoration-skip-ink: all;
+  text-decoration-skip: objects;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+
+  text-emphasis: none;
+  text-emphasis-color: currentColor;
+  text-emphasis-position: over right;
+}
+
+@mixin buildInheritance {
+  direction: ltr;
+  -webkit-font-smoothing: inherit;
+  font-smooth: inherit;
+  text-rendering: inherit;
+  unicode-bidi: inherit;
+  writing-mode: inherit;
+  
+  -webkit-text-fill-color: inherit;
+  -webkit-text-stroke-color: inherit;
+  -webkit-tap-highlight-color: inherit;
+  caret-color: inherit;
+  color: inherit;
+
+  font-family: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+
+  font-size: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
   text-transform: inherit;
-  text-wrap: inherit;
+
+  font-synthesis: inherit;
+  font-variant: inherit;
+  font-feature-settings: inherit;
+  font-kerning: inherit;
+  font-optical-sizing: inherit;
+  font-variation-settings: inherit;
+  font-size-adjust: inherit;
+  font-language-override: inherit;
+  font-stretch: inherit;
+  
+  text-align: inherit;
+  text-align-last: inherit;
+  text-orientation: inherit;
+  text-justify: inherit;
+  
+  overflow: inherit;
+  text-overflow: inherit;
   white-space: inherit;
   white-space-collapse: inherit;
+  
+  line-clamp: inherit;
+  overflow-wrap: inherit;
+  text-wrap: inherit;
+  
+  line-break: inherit;
   word-break: inherit;
   word-spacing: inherit;
+  
+  hyphens: inherit;
+  hyphenate-character: inherit;
+  hyphenate-limit-chars: inherit;
+  
+  tab-size: inherit;
+  text-indent: inherit;
+
+  text-decoration: inherit;
+  text-decoration-color: inherit;
+  text-decoration-skip-ink: inherit;
+  text-decoration-skip: inherit;
+  text-underline-offset: inherit;
+  text-underline-position: inherit;
+
+  text-emphasis: inherit;
+  text-emphasis-color: inherit;
+  text-emphasis-position: inherit;
 }
 
 @mixin buildProse {
-  :where(*) {
-    font-family: $v-fontFamily;
-    font-weight: $v-fontWeight;
-    font-style: $v-fontStyle;
-  }
-
-  :where(.prose) {
+  & .prose {
     overflow: visible;
     width: 100%;
     display: grid;
@@ -71,6 +155,7 @@ $const-fonts: () !default;
     color: inherit;
 
     & * {
+      @include transparent;
       color: inherit;
       
       overflow-inline: visible;
@@ -82,8 +167,9 @@ $const-fonts: () !default;
       translate: 0 $calc_fontOffsetTop;
 
       font-size: $calc_fontSize;
-      letter-spacing: $calc_letterSpacing;
       line-height: $calc_lineHeight;
+      letter-spacing: $calc_letterSpacing;
+      text-transform: none;
     }
 
     &.unpadded {
@@ -122,10 +208,4 @@ $const-fonts: () !default;
   $_firstFont: list.nth(map.keys($const-fonts), 1);
 
   @include useFontFace($_firstFont);
-}
-
-@mixin includeType {
-  @include buildBase;
-  @include buildProse;
-  @include buildFonts;
 }

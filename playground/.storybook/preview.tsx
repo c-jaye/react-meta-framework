@@ -37,7 +37,7 @@ const preview: Preview = {
         (Story) => {
             return (
                 <StrictMode>
-                    <div data-theme="dark">
+                    <div data-rms data-theme="dark">
                         <Story />
                     </div>
                 </StrictMode>

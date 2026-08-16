@@ -21,7 +21,7 @@ export default function useOptionsSearch<T>({
     const [term, setTerm] = useState("")
 
     const onSearchInput = (ev: React.KeyboardEvent) => {
-        if (!/^[A-Za-z0-9 ]$/u.exec(ev.key)?.length) return
+        if (!/^[A-z0-9 ]$/u.exec(ev.key)?.length) return
 
         if (!searchTime.current || (searchTime.current + cooldown < Date.now())) {
             searchTerm.current = ""

@@ -9,8 +9,8 @@ $v-aspectUnit: var(--aspect-unit, 1lvh);
 	@media (min-aspect-ratio: #{map.get(map.get($const-aspects, $_aspect), "ratio")}) {
 		@content;
 	}
-};
+}
 
 @function unit($_value) {
     @return calc($v-aspectUnit * #{$_value});
-};
+}

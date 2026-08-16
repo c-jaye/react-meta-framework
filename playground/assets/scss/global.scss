@@ -12,8 +12,21 @@
 );
 
 :root {
-    @include reset.includeReset;
-    @include type.includeType;
-    @include aspect.includeAspects;
-    @include theme.includeThemes;
+    @include aspect.buildAspects;
+    @include theme.buildThemes;
+    @include type.buildProse;
+    @include type.buildFonts;
+}
+
+:where([data-rms]) {
+    &, & * {
+        &, &::before, &::after, &::backdrop {
+            @include reset.buildResetBase;
+            @include reset.buildResetHidden;
+        }
+    }
+    @include type.buildBase;
+    & * {
+        @include type.buildInheritance;
+    }
 }
