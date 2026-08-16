@@ -1,5 +1,5 @@
 import { type Obj, entriesOf } from "@cjaye/utils"
-import type { Tokens } from "@/types"
+import type { Tokens } from "../types"
 import { buildScssMap } from "./scss"
 
 export async function buildTokens(
