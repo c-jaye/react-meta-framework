@@ -1,10 +1,20 @@
+import { type CanvasMetrics, type Metrics, calculateMetrics, installFontFace, measureText } from "@/util/type"
 import type { LabelValue, Obj } from "@cjaye/utils"
-import { calculateMetrics, installFontFace, measureText } from "@/util/type"
 import { fetchAny, fetchJson, toUrlParams } from "@cjaye/utils"
 import { useCallback, useRef, useState } from "react"
 import { FONT_TEST_CHARACTERS } from "@/const/strings"
-import type { FullMetrics } from "@/types/type"
 import { opentypeMetrics } from "~/util/opentype"
+
+export interface FullMetrics {
+    family: string
+    weight: string
+    canvasMixed: CanvasMetrics
+    canvasCap: CanvasMetrics
+    canvasEx: CanvasMetrics
+    fontFace: FontFace
+    opentype: opentype.Font
+    final: Metrics
+}
 
 export interface UseWebFontsOptions {
     onLoadOptions?: (options: {

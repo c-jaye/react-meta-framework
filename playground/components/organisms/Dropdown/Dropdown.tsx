@@ -1,9 +1,9 @@
+import { DROPDOWN_STATE, type DropdownProps } from "./types"
 import { useEffect, useState } from "react"
-import type { DropdownProps } from "./types"
 import type { JSONPrimitive } from "@cjaye/utils"
 import classNames from "classnames"
 import useComponent from "@/hooks/useComponent"
-import useComponentState from "@/hooks/useComponentState"
+import useComponentReturn from "@/hooks/useComponentReturn"
 
 import DropdownList from "~/components/DropdownList"
 
@@ -13,27 +13,27 @@ export const Dropdown = <T extends JSONPrimitive = JSONPrimitive>({
     items = [],
     value = null,
     onSelection,
-    stateProps,
     className,
     ...props
 }: DropdownProps<T>) => {
-    const { ref, state, updateState } = useComponentState({
-        ...stateProps,
+    const { ref, state, updateState } = useComponent({
+        ...props,
+        stateDef: props.stateDef ?? DROPDOWN_STATE,
         onStateChange: (s, k) => {
             if (!s.focusWithin) updateState({ active: false })
             updateButtonState({ disabled: s.disabled })
             updateListState({ active: s.active, focus: s.active, disabled: s.disabled })
-            stateProps?.onStateChange?.(s, k)
+            props?.onStateChange?.(s, k)
         },
     })
 
-    const { ref: buttonRef, updateState: updateButtonState } = useComponentState({
+    const { ref: buttonRef, updateState: updateButtonState } = useComponent({
         onStateChange: ({ disabled }) => updateState({ disabled }),
     })
 
-    const { ref: searchRef } = useComponentState()
+    const { ref: searchRef } = useComponent()
 
-    const { ref: listRef, updateState: updateListState } = useComponent()
+    const { ref: listRef, updateState: updateListState } = useComponentReturn()
 
     const [selectedValue, setSelectedValue] = useState<T | null>(value)
     const [term, setTerm] = useState("")
@@ -69,6 +69,7 @@ export const Dropdown = <T extends JSONPrimitive = JSONPrimitive>({
                 </span>
             </button>
             <DropdownList
+                stateRef={listRef}
                 value={selectedValue}
                 items={items}
                 onSelection={(v) => {
@@ -84,7 +85,6 @@ export const Dropdown = <T extends JSONPrimitive = JSONPrimitive>({
                     updateButtonState({ focus: true })
                     ev.preventDefault()
                 }}
-                stateProps={{ stateRef: listRef }}
             />
         </div>
     )

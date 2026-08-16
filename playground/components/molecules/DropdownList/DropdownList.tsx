@@ -1,10 +1,10 @@
+import { DROPDOWN_LIST_STATE, type DropdownListProps } from "./types"
 import type { JSONPrimitive, LabelValue } from "@cjaye/utils"
 import { type KeyboardEvent, useCallback, useEffect, useState } from "react"
 import { useComponentState, useOptionsSearch } from "@/hooks"
-import type { DropdownListProps } from "./types"
 import classNames from "classnames"
 import { stringOrJson } from "@/util"
-import useComponent from "@/hooks/useComponent"
+import useComponentReturn from "@/hooks/useComponentReturn"
 
 import DropdownListItem from "~/components/DropdownListItem"
 
@@ -16,13 +16,12 @@ export const DropdownList = <T extends JSONPrimitive = JSONPrimitive>({
     onKeyDown,
     onSelection: _onSelection,
     onSearch,
-    stateProps,
     className,
     children,
     ...props
 }: DropdownListProps<T>) => {
-    const { ref } = useComponentState(stateProps)
-    const { ref: itemRef, refs: itemRefs, updateStates: updateItemStates } = useComponent()
+    const { ref } = useComponentState({ ...props, stateDef: props.stateDef ?? DROPDOWN_LIST_STATE })
+    const { ref: itemRef, refs: itemRefs, updateStates: updateItemStates } = useComponentReturn()
 
     const [selectedValue, setSelectedValue] = useState<T | null>(value)
     const [highlightedValue, setHighlightedValue] = useState<T | null>(value)
@@ -79,6 +78,7 @@ export const DropdownList = <T extends JSONPrimitive = JSONPrimitive>({
     }, [onSearchInput, onKeyDown, highlightedValue, items, itemRefs, onSelection])
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSelectedValue(value)
         setHighlightedValue(value)
     }, [value])
@@ -100,13 +100,10 @@ export const DropdownList = <T extends JSONPrimitive = JSONPrimitive>({
                     {...props}
                     className={classNames(scss.dropdownListItem)}
                     key={stringOrJson(v)}
+                    stateRef={x => itemRef(x, stringOrJson(v))}
                     value={v}
                     selected={v === selectedValue}
                     onSelection={onSelection}
-                    stateProps={{
-                        ...props.stateProps,
-                        stateRef: x => itemRef(x, stringOrJson(v)),
-                    }}
                 />
             ))}
         </div>
