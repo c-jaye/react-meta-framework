@@ -1,5 +1,5 @@
 import type { PluginOption, ViteDevServer } from "vite"
-import { buildTokens } from "@/util"
+import { buildTokens } from "../util"
 
 export default function tokenGenerator(
     writeFile: (path: string, content: string) => Promise<unknown>,
