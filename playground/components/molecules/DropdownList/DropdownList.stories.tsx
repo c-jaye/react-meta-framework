@@ -19,7 +19,7 @@ const meta: Meta<typeof DropdownList> = {
             { label: "Option 5", value: "5" },
         ],
         value: "2",
-        stateProps: { stateOverride: { active: true } },
+        stateForce: { active: true },
     },
     render: args => (
         <div style={{

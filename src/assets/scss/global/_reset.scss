@@ -1,438 +1,432 @@
 @use "sass:map";
 
 @mixin buildResetBase {
-    *:where(
-        :not(svg *),
-        ::before,
-        ::after,
-        ::backdrop
-    ) {
-        &:focus-visible { outline: none; }
+    &:focus-visible { outline: none; }
 
-        all: initial;
-        
-        // BEHAVIOUR
-        // Cascading
-        direction: ltr;
-        unicode-bidi: normal;
+    all: initial;
+    
+    // BEHAVIOUR
+    // Cascading
+    direction: ltr;
+    unicode-bidi: normal;
 
-        // Accessibility
-        will-change: auto;
-        forced-color-adjust: auto;
-        text-size-adjust: auto;
+    // Accessibility
+    will-change: auto;
+    forced-color-adjust: auto;
+    text-size-adjust: auto;
 
-        // Interaction
-        -webkit-appearance: unset;
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -webkit-tap-highlight-color: transparent !important;
-        -webkit-text-security: unset;
-        -moz-user-focus: none;
-        -moz-user-input: auto;
-        overscroll-behavior: auto;
-        overscroll-behavior-block: auto;
-        overscroll-behavior-inline: auto;
-        cursor: auto;
-        pointer-events: auto;
-        touch-action: manipulation;
-        content-visibility: visible;
-        resize: none;
-        user-select: auto;
-        speak-as: auto;
+    // Interaction
+    -webkit-appearance: unset;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-text-security: unset;
+    -moz-user-focus: none;
+    -moz-user-input: auto;
+    overscroll-behavior: auto;
+    overscroll-behavior-block: auto;
+    overscroll-behavior-inline: auto;
+    cursor: auto;
+    pointer-events: auto;
+    touch-action: manipulation;
+    content-visibility: visible;
+    resize: none;
+    user-select: auto;
+    speak-as: auto;
 
-        // CONTENT
-        // Generated
-        content: unset;
-        quotes: none;
+    // CONTENT
+    // Generated
+    content: unset;
+    quotes: none;
 
-        // Lists
-        -moz-image-region: auto;
-        list-style: none;
+    // Lists
+    -moz-image-region: auto;
+    list-style: none;
 
-        // Counters
-        counter-increment: none;
-        counter-reset: none;
-        counter-set: none;
+    // Counters
+    counter-increment: none;
+    counter-reset: none;
+    counter-set: none;
 
-        // LAYOUT
-        // Display
-        contain: none;
-        display: block;
-        visibility: visible;
+    // LAYOUT
+    // Display
+    contain: none;
+    display: block;
+    visibility: visible;
 
-        // Fragmentation
-        break-after: auto;
-        break-before: auto;
-        break-inside: auto;
-        orphans: 2;
-        widows: 2;
+    // Fragmentation
+    break-after: auto;
+    break-before: auto;
+    break-inside: auto;
+    orphans: 2;
+    widows: 2;
 
-        // Inline
-        clear: none;
-        dominant-baseline: auto;
-        float: none;
-        vertical-align: baseline;
-        text-box: unset;
-        alignment-baseline: baseline;
-        text-box-edge: auto;
-        text-box-trim: none;
+    // Inline
+    clear: none;
+    dominant-baseline: auto;
+    float: none;
+    vertical-align: baseline;
+    text-box: unset;
+    alignment-baseline: baseline;
+    text-box-edge: auto;
+    text-box-trim: none;
 
-        // Flex
-        flex: initial;
-        flex-flow: row nowrap;
+    // Flex
+    flex: initial;
+    flex-flow: row nowrap;
 
-        // Grid
-        grid-area: auto;
-        grid-template: none;
-        grid-auto-flow: row;
-        grid-auto-columns: auto;
-        grid-auto-rows: auto;
+    // Grid
+    grid-area: auto;
+    grid-template: none;
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    grid-auto-rows: auto;
 
-        // Alignment
-        place-content: normal;
-        place-items: normal legacy;
-        place-self: auto;
-        order: 0;
+    // Alignment
+    place-content: normal;
+    place-items: normal legacy;
+    place-self: auto;
+    order: 0;
 
-        // Table
-        caption-side: top;
-        border-collapse: collapse;
-        border-spacing: 0;
-        empty-cells: show;
-        table-layout: auto;
+    // Table
+    caption-side: top;
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+    table-layout: auto;
 
-        // Columns
-        column-rule: 0;
-        columns: auto;
-        column-span: none;
+    // Columns
+    column-rule: 0;
+    columns: auto;
+    column-span: none;
 
-        // SIZING
-        // Dimensions
-        -moz-float-edge: border-box;
-        box-sizing: border-box;
-        aspect-ratio: auto;
-        height: auto;
-        width: auto;
-        block-size: auto;
-        inline-size: auto;
-        max-height: none;
-        max-width: none;
-        max-block-size: none;
-        max-inline-size: none;
-        min-height: auto;
-        min-width: auto;
-        min-block-size: auto;
-        min-inline-size: auto;
-        contain-intrinsic-size: unset;
-        contain-intrinsic-block-size: none;
-        contain-intrinsic-height: none;
-        contain-intrinsic-inline-size: none;
-        contain-intrinsic-width: none;
-        zoom: 1;
+    // SIZING
+    // Dimensions
+    -moz-float-edge: border-box;
+    box-sizing: border-box;
+    aspect-ratio: auto;
+    height: auto;
+    width: auto;
+    block-size: auto;
+    inline-size: auto;
+    max-height: none;
+    max-width: none;
+    max-block-size: none;
+    max-inline-size: none;
+    min-height: auto;
+    min-width: auto;
+    min-block-size: auto;
+    min-inline-size: auto;
+    contain-intrinsic-size: unset;
+    contain-intrinsic-block-size: none;
+    contain-intrinsic-height: none;
+    contain-intrinsic-inline-size: none;
+    contain-intrinsic-width: none;
+    zoom: 1;
 
-        // Padding
-        padding: 0;
-        padding-block: 0;
-        padding-inline: 0;
+    // Padding
+    padding: 0;
+    padding-block: 0;
+    padding-inline: 0;
 
-        // Border
-        -webkit-border-before: unset;
-        border: 0;
-        border-block: 0;
-        border-inline: 0;
+    // Border
+    -webkit-border-before: unset;
+    border: 0;
+    border-block: 0;
+    border-inline: 0;
 
-        // Overflow
-        overflow: visible;
-        overflow-block: visible;
-        overflow-inline: visible;
-        scroll-margin: 0;
-        scroll-margin-block: 0;
-        scroll-margin-inline: 0;
-        scroll-padding: 0;
-        scroll-padding-block: 0;
-        scroll-padding-inline: 0;
-        scroll-snap-align: none;
-        scroll-snap-stop: normal;
-        scroll-snap-type: none;
-        scrollbar-gutter: auto;
-        scrollbar-width: auto;
-        overflow-anchor: auto;
-        overflow-clip-margin: 0px;
+    // Overflow
+    overflow: visible;
+    overflow-block: visible;
+    overflow-inline: visible;
+    scroll-margin: 0;
+    scroll-margin-block: 0;
+    scroll-margin-inline: 0;
+    scroll-padding: 0;
+    scroll-padding-block: 0;
+    scroll-padding-inline: 0;
+    scroll-snap-align: none;
+    scroll-snap-stop: normal;
+    scroll-snap-type: none;
+    scrollbar-gutter: auto;
+    scrollbar-width: auto;
+    overflow-anchor: auto;
+    overflow-clip-margin: 0px;
 
-        // POSITION
-        // Relative
-        inset: 0;
-        inset-block-end: auto;
-        inset-block-start: auto;
-        inset-inline-end: auto;
-        inset-inline-start: auto;
-        isolation: auto;
-        position: relative;
-        z-index: auto;
-        overlay: none;
+    // POSITION
+    // Relative
+    inset: 0;
+    inset-block-end: auto;
+    inset-block-start: auto;
+    inset-inline-end: auto;
+    inset-inline-start: auto;
+    isolation: auto;
+    position: relative;
+    z-index: auto;
+    overlay: none;
 
-        // Transform
-        backface-visibility: visible;
-        perspective: none;
-        perspective-origin: 50% 50%;
-        rotate: none;
-        scale: none;
-        transform: none;
-        transform-box: view-box;
-        transform-origin: 50% 50% 0;
-        transform-style: flat;
-        translate: none;
+    // Transform
+    backface-visibility: visible;
+    perspective: none;
+    perspective-origin: 50% 50%;
+    rotate: none;
+    scale: none;
+    transform: none;
+    transform-box: view-box;
+    transform-origin: 50% 50% 0;
+    transform-style: flat;
+    translate: none;
 
-        // Anchoring
-        position-try: normal none;
-        anchor-name: none;
-        position-anchor: auto;
-        position-area: none;
-        position-visibility: anchors-visible;
+    // Anchoring
+    position-try: normal none;
+    anchor-name: none;
+    position-anchor: auto;
+    position-area: none;
+    position-visibility: anchors-visible;
 
-        // SPACING
-        // Gap
-        row-gap: normal;
-        column-gap: normal;
+    // SPACING
+    // Gap
+    row-gap: normal;
+    column-gap: normal;
 
-        // Margin
-        margin: 0;
-        margin-block: 0;
-        margin-inline: 0;
-        margin-trim: none;
+    // Margin
+    margin: 0;
+    margin-block: 0;
+    margin-inline: 0;
+    margin-trim: none;
 
-        // Shape
-        shape-image-threshold: 0.0;
-        shape-margin: 0;
-        shape-outside: none;
+    // Shape
+    shape-image-threshold: 0.0;
+    shape-margin: 0;
+    shape-outside: none;
 
-        // TYPOGRAPHY
-        // Font
-        font-synthesis: none;
-        font-variant: normal;
-        font-family: inherit;
-        font-feature-settings: normal;
-        font-kerning: auto;
-        font-optical-sizing: auto;
-        font-size: units(4);
-        font-style: normal;
-        font-variation-settings: normal;
-        font-weight: normal;
-        font-palette: normal;
-        font-size-adjust: none;
-        font-language-override: normal;
-        font-synthesis-position: none;
-        font-stretch: normal;
+    // TYPOGRAPHY
+    // Font
+    font-synthesis: none;
+    font-variant: normal;
+    font-family: inherit;
+    font-feature-settings: normal;
+    font-kerning: auto;
+    font-optical-sizing: auto;
+    font-size: units(4);
+    font-style: normal;
+    font-variation-settings: normal;
+    font-weight: normal;
+    font-palette: normal;
+    font-size-adjust: none;
+    font-language-override: normal;
+    font-synthesis-position: none;
+    font-stretch: normal;
 
-        // Text
-        -webkit-hyphens: none;
-        letter-spacing: normal;
-        line-break: auto;
-        line-height: normal;
-        overflow-wrap: normal;
-        tab-size: 8;
-        text-align: start;
-        text-align-last: auto;
-        text-combine-upright: none;
-        text-indent: 0;
-        text-orientation: mixed;
-        text-overflow: clip;
-        text-transform: none;
-        white-space: normal;
-        word-break: normal;
-        word-spacing: normal;
-        writing-mode: horizontal-tb;
-        text-wrap: wrap auto;
-        hyphenate-character: auto;
-        hyphens: manual;
-        white-space-collapse: collapse;
-        hanging-punctuation: none;
-        hyphenate-limit-chars: auto;
-        initial-letter: normal;
-        line-clamp: none;
-        text-justify: auto;
-        text-spacing-trim: normal;
-        line-height-step: 0;
+    // Text
+    -webkit-hyphens: none;
+    letter-spacing: normal;
+    line-break: auto;
+    line-height: normal;
+    overflow-wrap: normal;
+    tab-size: 8;
+    text-align: start;
+    text-align-last: auto;
+    text-combine-upright: none;
+    text-indent: 0;
+    text-orientation: mixed;
+    text-overflow: clip;
+    text-transform: none;
+    white-space: normal;
+    word-break: normal;
+    word-spacing: normal;
+    writing-mode: horizontal-tb;
+    text-wrap: wrap auto;
+    text-wrap-style: auto;
+    hyphenate-character: auto;
+    hyphens: manual;
+    white-space-collapse: collapse;
+    hanging-punctuation: none;
+    hyphenate-limit-chars: auto;
+    initial-letter: normal;
+    line-clamp: none;
+    text-justify: auto;
+    text-spacing-trim: normal;
+    line-height-step: 0;
 
-        // Ruby
-        ruby-align: space-around;
-        ruby-position: over;
+    // Ruby
+    ruby-align: space-around;
+    ruby-position: over;
 
-        // Decoration
-        -webkit-text-stroke: 0;
-        text-decoration: none solid auto;
-        text-emphasis: none;
-        text-decoration-skip-ink: auto;
-        text-emphasis-position: over right;
-        text-underline-offset: auto;
-        text-underline-position: from-font;
-        box-decoration-break: slice;
-        text-decoration-skip: objects;
+    // Decoration
+    -webkit-text-stroke: 0;
+    text-decoration: none solid auto;
+    text-emphasis: none;
+    text-decoration-skip-ink: auto;
+    text-emphasis-position: over right;
+    text-underline-offset: auto;
+    text-underline-position: from-font;
+    box-decoration-break: slice;
+    text-decoration-skip: objects;
 
-        // MEDIA
-        // Raster
-        image-orientation: from-image;
-        object-fit: fill;
-        object-position: 50% 50%;
-        image-resolution: 1dppx;
+    // MEDIA
+    // Raster
+    image-orientation: from-image;
+    object-fit: fill;
+    object-position: 50% 50%;
+    image-resolution: 1dppx;
 
-        // Querying
-        container: unset;
-        container-name: none;
-        container-type: normal;
+    // Querying
+    container: unset;
+    container-name: none;
+    container-type: normal;
 
-        // Page
-        page: auto;
-        print-color-adjust: economy;
-        page-break-after: auto;
-        page-break-before: auto;
-        page-break-inside: auto;
+    // Page
+    page: auto;
+    print-color-adjust: economy;
+    page-break-after: auto;
+    page-break-before: auto;
+    page-break-inside: auto;
 
-        // Math
-        math-style: normal;
-        math-depth: 0;
-        math-shift: normal;
+    // Math
+    math-style: normal;
+    math-depth: 0;
+    math-shift: normal;
 
-        // STYLE
-        // UI
-        appearance: none;
-        color-scheme: normal;
-        field-sizing: fixed;
+    // STYLE
+    // UI
+    appearance: none;
+    color-scheme: normal;
+    field-sizing: fixed;
 
-        // Background
-        background-attachment: scroll;
-        background-clip: border-box;
-        background-image: none;
-        background-origin: padding-box;
-        background-position: 0% 0%;
-        background-position-x: 0%;
-        background-position-y: 0%;
-        background-repeat: repeat;
-        background-size: auto auto;
+    // Background
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0% 0%;
+    background-position-x: 0%;
+    background-position-y: 0%;
+    background-repeat: repeat;
+    background-size: auto auto;
 
-        // Radius
-        border-radius: 0;
-        border-end-end-radius: 0;
-        border-end-start-radius: 0;
-        border-start-end-radius: 0;
-        border-start-start-radius: 0;
+    // Radius
+    border-radius: 0;
+    border-end-end-radius: 0;
+    border-end-start-radius: 0;
+    border-start-end-radius: 0;
+    border-start-start-radius: 0;
 
-        // Border
-        border-style: none;
-        border-block-style: none;
-        border-inline-style: none;
-        border-image-outset: 0;
-        border-image-repeat: stretch;
-        border-image-slice: 100%;
-        border-image-source: none;
-        border-image-width: 1;
+    // Border
+    border-style: none;
+    border-block-style: none;
+    border-inline-style: none;
+    border-image-outset: 0;
+    border-image-repeat: stretch;
+    border-image-slice: 100%;
+    border-image-source: none;
+    border-image-width: 1;
 
-        // Outline
-        outline: 0 none;
-        outline-offset: 0;
+    // Outline
+    outline: 0 none;
+    outline-offset: 0;
 
-        // Columns
-        column-fill: balance;
-        column-rule-style: none;
+    // Columns
+    column-fill: balance;
+    column-rule-style: none;
 
-        // EFFECTS
-        // Filtering
-        box-shadow: none;
-        filter: none;
-        text-shadow: none;
-        backdrop-filter: none;
+    // EFFECTS
+    // Filtering
+    box-shadow: none;
+    filter: none;
+    text-shadow: none;
+    backdrop-filter: none;
 
-        // Rendering
-        -webkit-font-smoothing: auto;
-        background-blend-mode: normal;
-        image-rendering: auto;
-        mix-blend-mode: normal;
-        text-rendering: auto;
-        font-smooth: auto;
+    // Rendering
+    -webkit-font-smoothing: auto;
+    background-blend-mode: normal;
+    image-rendering: auto;
+    mix-blend-mode: normal;
+    text-rendering: auto;
+    font-smooth: auto;
 
-        // Masking
-        -webkit-mask-box-image: unset;
-        -webkit-mask-composite: source-over;
-        -webkit-mask-position-x: 0%;
-        -webkit-mask-position-y: 0%;
-        -webkit-mask-repeat-x: repeat;
-        -webkit-mask-repeat-y: repeat;
-        clip-path: none;
-        clip-rule: unset;
-        mask-type: luminance;
-        mask-clip: border-box;
-        mask-composite: add;
-        mask-image: none;
-        mask-mode: match-source;
-        mask-origin: border-box;
-        mask-position: 0% 0%;
-        mask-repeat: repeat;
-        mask-size: auto;
-        mask-border-outset: 0;
-        mask-border-repeat: stretch;
-        mask-border-slice: 0;
-        mask-border-source: none;
-        mask-border-width: auto;
-        clip: auto;
-        mask-border-mode: luminance;
+    // Masking
+    -webkit-mask-box-image: unset;
+    -webkit-mask-composite: source-over;
+    -webkit-mask-position-x: 0%;
+    -webkit-mask-position-y: 0%;
+    -webkit-mask-repeat-x: repeat;
+    -webkit-mask-repeat-y: repeat;
+    clip-path: none;
+    clip-rule: unset;
+    mask-type: luminance;
+    mask-clip: border-box;
+    mask-composite: add;
+    mask-image: none;
+    mask-mode: match-source;
+    mask-origin: border-box;
+    mask-position: 0% 0%;
+    mask-repeat: repeat;
+    mask-size: auto;
+    mask-border-outset: 0;
+    mask-border-repeat: stretch;
+    mask-border-slice: 0;
+    mask-border-source: none;
+    mask-border-width: auto;
+    clip: auto;
+    mask-border-mode: luminance;
 
-        // Colour
-        -webkit-text-fill-color: currentColor;
-        -webkit-text-stroke-color: currentColor;
-        -webkit-tap-highlight-color: currentColor;
-        border-color: currentColor;
-        border-block-color: currentColor;
-        border-inline-color: currentColor;
-        caret-color: currentColor;
-        accent-color: currentColor;
-        background-color: transparent;
-        color: currentColor;
-        opacity: 1;
-        column-rule-color: currentColor;
-        outline-color: currentColor;
-        text-decoration-color: currentColor;
-        text-emphasis-color: currentColor;
-        scrollbar-color: currentColor;
+    // Colour
+    -webkit-text-fill-color: currentColor;
+    -webkit-text-stroke-color: currentColor;
+    -webkit-tap-highlight-color: currentColor;
+    border-color: currentColor;
+    border-block-color: currentColor;
+    border-inline-color: currentColor;
+    caret-color: currentColor;
+    accent-color: currentColor;
+    background-color: transparent;
+    color: currentColor;
+    opacity: 1;
+    column-rule-color: currentColor;
+    outline-color: currentColor;
+    text-decoration-color: currentColor;
+    text-emphasis-color: currentColor;
+    scrollbar-color: currentColor;
 
-        // ANIMATION
-        // Animations
-        animation: unset;
-        animation-delay: 0s;
-        animation-direction: normal;
-        animation-duration: 0s;
-        animation-fill-mode: none;
-        animation-iteration-count: 1;
-        animation-name: none;
-        animation-play-state: running;
-        animation-timing-function: ease;
-        animation-composition: replace;
-        interpolate-size: numeric-only;
+    // ANIMATION
+    // Animations
+    animation: unset;
+    animation-delay: 0s;
+    animation-direction: normal;
+    animation-duration: 0s;
+    animation-fill-mode: none;
+    animation-iteration-count: 1;
+    animation-name: none;
+    animation-play-state: running;
+    animation-timing-function: ease;
+    animation-composition: replace;
+    interpolate-size: numeric-only;
 
-        // Transitions
-        transition: unset;
-        transition-delay: 0s;
-        transition-duration: 0s;
-        transition-property: all;
-        transition-timing-function: ease;
-        transition-behavior: normal;
-        view-transition-name: initial;
+    // Transitions
+    transition: unset;
+    transition-delay: 0s;
+    transition-duration: 0s;
+    transition-property: all;
+    transition-timing-function: ease;
+    transition-behavior: normal;
+    view-transition-name: initial;
 
-        // Timeline
-        animation-range: normal;
-        scroll-timeline: none block;
-        view-timeline: none block;
-        animation-timeline: auto;
-        timeline-scope: none;
-        view-timeline-inset: auto;
+    // Timeline
+    animation-range: normal;
+    scroll-timeline: none block;
+    view-timeline: none block;
+    animation-timeline: auto;
+    timeline-scope: none;
+    view-timeline-inset: auto;
 
-        // Motion
-        offset-distance: 0;
-        offset-path: none;
-        offset-rotate: auto;
-        scroll-behavior: auto;
-        offset-anchor: auto;
-        offset-position: normal;
-    }
+    // Motion
+    offset-distance: 0;
+    offset-path: none;
+    offset-rotate: auto;
+    scroll-behavior: auto;
+    offset-anchor: auto;
+    offset-position: normal;
 }
 
 @mixin buildResetHidden {
@@ -451,9 +445,4 @@
         content-visibility: hidden !important;
         user-select: none !important;
     }
-}
-
-@mixin includeReset {
-    @include buildResetBase;
-    @include buildResetHidden;
 }

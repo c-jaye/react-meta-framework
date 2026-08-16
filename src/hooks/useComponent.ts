@@ -1,53 +1,107 @@
 import { COMPONENT_STATE_ORDER, DEFAULT_COMPONENT_STATE } from "@/const/state"
-import type { ComponentState, ComponentStateProps, UseComponentStateReturn } from "@/types"
-import { type Mutable, type Obj, deepMerge, deepMergeAll, entriesOf, fromJson, isBool, isFunc, isIn, keysOf, wait } from "@cjaye/utils"
+import type { ComponentState, ComponentStateFull, ComponentStatePartial, ComponentStateProps, UseComponentReturn } from "@/types"
+import { type JSONObject, type Maybe, type Mutable, type Obj, deepMerge, deepMergeAll, fromJson, isFunc, isIn, keysOf, wait } from "@cjaye/utils"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { filterObj } from "@/util/com"
 import { nextFocusable } from "@/util/dom"
+import useSharedState from "./useSharedState"
 
-export default function useComponentState<S extends Obj<boolean | undefined> = ComponentState>(
-    options?: ComponentStateProps<S> & { utiliseTouch?: boolean },
+export default function useComponent<S extends ComponentStatePartial = ComponentStateFull>(
+    options?: ComponentStateProps<S>,
 ) {
     const {
         stateRef,
         ref: parentRef,
-        stateDefinition = DEFAULT_COMPONENT_STATE,
+        stateDef: stateDefinition = DEFAULT_COMPONENT_STATE,
         onStateChange,
-        stateOverride,
-        utiliseTouch = false,
+        stateForce,
+        stateUseTouch = false,
     } = options ?? {}
 
-    const refs = useRef<Obj<HTMLElement | SVGElement | null>>({})
+    const refs = useRef<Obj<Maybe<HTMLElement | SVGElement>>>({})
     const states = useRef<Obj<ComponentState<S>>>({})
     const listeners = useRef<Obj<Obj<EventListener>>>({})
     const observers = useRef<Obj<MutationObserver>>({})
     const refreshTimes = useRef<Obj<number>>({})
-    const queuedState = useRef<Obj<Partial<ComponentState<S>>>>({})
-    const overrides = useRef<Obj<Partial<ComponentState<S>>>>({})
+    const queuedState = useRef<Obj<ComponentState<S>>>({})
+    const overrides = useRef<ComponentState<S>>({})
 
-    const [finalState, setFinalState] = useState<Obj<ComponentState<S>> & ComponentState<S>>({})
+    const [finalState, setFinalState] = useState<ComponentState<S> & Obj<ComponentState<S>>>({})
+
+    const globalFocusSettings = useMemo(() => {
+        const focusData = {
+            lastTime: 0,
+            queue: [] as ["focus" | "blur", HTMLElement, () => boolean][],
+        }
+        const pushFocus = (el: HTMLElement, onConfirm: () => boolean = () => true) => {
+            focusData.queue.push(["focus", el, onConfirm])
+            void update()
+        }
+        const pushBlur = (el: HTMLElement, onConfirm: () => boolean = () => true) => {
+            focusData.queue.push(["blur", el, onConfirm])
+            void update()
+        }
+        const update = async () => {
+            if (!focusData.queue.length) return
+            const delay = 33
+            const rt = focusData.lastTime = Date.now()
+            void await wait(delay)
+            if (rt !== focusData.lastTime) return
+            focusData.lastTime = 0
+            if (!focusData.queue.filter(x => x[0] === "focus").length) {
+                focusData.queue.filter(x => x[0] === "blur").forEach((x) => {
+                    if (!x[2]()) return
+                    x[1]?.blur()
+                })
+                focusData.queue = []
+                return
+            }
+            focusData.queue.filter(x => x[0] === "focus").reverse().find((x) => {
+                if (!x[2]()) return false
+                x[1]?.focus()
+                return true
+            })
+            focusData.queue = []
+        }
+
+        return {
+            focusData,
+            pushFocus,
+            pushBlur,
+            update,
+        }
+    }, [])
+
+    const { pushFocus, pushBlur } = useSharedState(globalFocusSettings)
 
     const isTouch = useMemo(() => {
-        return utiliseTouch && !window.matchMedia("(hover: hover) and (pointer: fine) and (update: fast)").matches
-    }, [utiliseTouch])
+        return stateUseTouch && !window.matchMedia("(hover: hover) and (pointer: fine) and (update: fast)").matches
+    }, [stateUseTouch])
 
-    const getAttributeState = useCallback((key: string) => {
+    const getAttributeState = useCallback((key: string): ComponentState<S> => {
         const attributeState = refs.current[key]?.getAttribute("data-rms")
-        return attributeState === ""
-            ? {}
-            : fromJson(attributeState ?? "{}") as ComponentState
-    }, [])
+        if (attributeState === "") return {}
+        const json = fromJson<JSONObject>(attributeState ?? "{}")
+        return filterObj(json, keysOf(stateDefinition))
+    }, [stateDefinition])
 
-    const normaliseState = useCallback((state: Partial<ComponentState<S>>) => {
-        if (state.focus) {
-            state.focusWithin = true
+    const normaliseState = useCallback((state: ComponentState<S>): ComponentState<S> => {
+        const s = state as ComponentStateFull
+
+        if (s.focus && isIn(stateDefinition, "focusWithin")) {
+            s.focusWithin = true
         }
 
-        if (state.disabled) {
-            state.focusNavigation = state.focusWithin = state.focus = state.active = state.selected = false
+        if (s.disabled) {
+            if (isIn(stateDefinition, "focusNavigation")) s.focusNavigation = false
+            if (isIn(stateDefinition, "focusWithin")) s.focusWithin = false
+            if (isIn(stateDefinition, "focus")) s.focus = false
+            if (isIn(stateDefinition, "active")) s.active = false
+            if (isIn(stateDefinition, "selected")) s.selected = false
         }
 
-        return state
-    }, [])
+        return s
+    }, [stateDefinition])
 
     const refresh = useCallback(async (key = "default") => {
         const rt = refreshTimes.current[key] = Date.now()
@@ -58,7 +112,7 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
         const allStates = normaliseState(deepMergeAll(
             states.current[key],
             queuedState.current[key] ?? {},
-            overrides.current?.[key] ?? {},
+            overrides.current ?? {},
             getAttributeState(key),
         ))
 
@@ -76,7 +130,7 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
 
         const newState = normaliseState(deepMergeAll(
             innerState,
-            overrides.current?.[key] ?? {},
+            overrides.current ?? {},
             getAttributeState(key),
         ))
 
@@ -88,8 +142,8 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
         states.current[key] = innerState
         setFinalState(s => ({
             ...s,
+            ...(key === "default" ? newState : {}) as ComponentState<S>,
             [key]: newState,
-            ...(key === "default" ? newState : {}),
         }))
 
         const allSortedStates = keysOf(stateDefinition)
@@ -106,23 +160,48 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
             el.disabled = !!prevState.disabled
         }
 
-        const focusableEl = nextFocusable(el.parentElement)
+        const focusableEl = nextFocusable(el)
+
+        if (!focusableEl) return
+
         if (newState.focus && !prevState.focus && focusableEl !== document.activeElement) {
-            focusableEl?.focus()
+            pushFocus(focusableEl, () => {
+                const focusableEl = nextFocusable(el)
+                const newState = normaliseState(deepMergeAll(
+                    states.current[key],
+                    queuedState.current[key] ?? {},
+                    overrides.current ?? {},
+                    getAttributeState(key),
+                ))
+                return !!newState.focus && focusableEl !== document.activeElement
+            })
         }
         else if (!newState.focus && prevState.focus && focusableEl === document.activeElement) {
-            focusableEl?.blur()
+            pushBlur(focusableEl, () => {
+                const focusableEl = nextFocusable(el)
+                const newState = normaliseState(deepMergeAll(
+                    states.current[key],
+                    queuedState.current[key] ?? {},
+                    overrides.current ?? {},
+                    getAttributeState(key),
+                ))
+                return !newState.focus && focusableEl === document.activeElement
+            })
         }
-    }, [getAttributeState, normaliseState, onStateChange, stateDefinition])
+    }, [getAttributeState, normaliseState, onStateChange, pushBlur, pushFocus, stateDefinition])
 
     const updateState = useCallback(<S extends Obj<boolean | undefined> = Obj<boolean | undefined>>(
-        patch: Partial<ComponentState<S>>,
+        patch: ComponentState<S>,
         key = "default",
     ) => {
         queuedState.current[key] = deepMerge(queuedState.current[key] ?? {}, patch)
 
         void refresh(key)
     }, [refresh])
+
+    const updateStates = useCallback((patch: (key: string) => ComponentState<S>) => {
+        keysOf(refs.current).forEach(k => updateState(patch(k)))
+    }, [updateState])
 
     const getRef = useCallback((node: HTMLElement | SVGElement | null, key = "default") => {
         const ref = refs.current[key]!
@@ -241,14 +320,14 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
                 }
                 const attributeState = getAttributeState(key)
                 if (el.disabled) {
-                    if (attributeState.disabled === false || overrides.current?.[key]?.disabled === false) {
+                    if (attributeState.disabled === false || overrides.current?.disabled === false) {
                         el.disabled = false
                         return
                     }
                     updateState({ disabled: true }, key)
                 }
                 else {
-                    if (attributeState.disabled === true || overrides.current?.[key]?.disabled === true) {
+                    if (attributeState.disabled === true || overrides.current?.disabled === true) {
                         el.disabled = true
                         return
                     }
@@ -295,29 +374,10 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
     }, [parentRef, stateDefinition, refresh, isTouch, updateState, getAttributeState])
 
     useEffect(() => {
-        const o: Obj<Obj<boolean | undefined>> = overrides.current
-        const changedKeys: string[] = []
-
-        entriesOf(stateOverride ?? {})
-            .forEach(([k, v]) => {
-                entriesOf(isBool(v) ? { default: v } : v ?? {})
-                    .forEach(([kk, vv]) => {
-                        if (o?.[kk]?.[k] !== vv && !changedKeys.includes(kk)) {
-                            changedKeys.push(kk)
-                        }
-                        o[kk] ??= {}
-                        o[kk][k] = vv
-                    })
-            })
-
-        if (!changedKeys.length) return
-
-        overrides.current = o
-
-        changedKeys.forEach((key) => {
+        keysOf(refs.current).forEach((key) => {
             const newState = deepMerge(
                 queuedState.current[key],
-                o?.[key] ?? {},
+                overrides.current ?? {},
             )
 
             if (keysOf(newState).every(k => newState[k] === states.current[key]?.[k])) {
@@ -328,20 +388,18 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
 
             void refresh(key)
         })
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [stateOverride])
+    }, [stateForce])
 
-    const returnData: UseComponentStateReturn<S> = {
+    const returnData = useMemo<UseComponentReturn<S>>(() => ({
         ref: getRef,
-        refs: refs,
+        refs,
         state: finalState,
         updateState,
-    }
+        updateStates,
+    }), [finalState, getRef, updateState, updateStates])
 
-    if (stateRef) {
-        stateRef.current = returnData
-    }
+    useEffect(() => stateRef?.(returnData), [returnData, stateRef])
 
     return returnData
 }

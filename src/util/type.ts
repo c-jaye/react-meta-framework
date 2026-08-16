@@ -1,8 +1,31 @@
 import type { FontFaceConfig, FontMetricsConfig, FontTypeConfig } from "@/types/components"
 import type { CSSProperties } from "react"
 import type { Font } from "opentype.js"
-import type { Metrics } from "@/types/type"
 import { round } from "@cjaye/utils"
+
+export interface CanvasMetrics {
+    size: number
+    height: number
+    ascent: number
+    descent: number
+    modifier: number
+}
+
+export interface FullCanvasMetrics extends CanvasMetrics {
+    heightActual: number
+    ascentActual: number
+    descentActual: number
+    modifierActual: number
+}
+
+export interface Metrics {
+    ascent: number
+    capHeight: number
+    exHeight: number
+    descent: number
+    lineGap: number
+    size: number
+}
 
 export function measureText(text: string, options: {
     fontFamily: string

@@ -6,6 +6,7 @@ import dotenv from "dotenv"
 import { mergeConfig } from "vite"
 import { resolve } from "path"
 import tokenGenerator from "../../src/plugins/tokenGenerator"
+import tsconfigPaths from "vite-tsconfig-paths"
 import { writeFile } from "fs/promises"
 
 const config = defineMain({
@@ -32,20 +33,16 @@ const config = defineMain({
         },
     },
     core: {
+        builder: "@storybook/builder-vite",
         disableTelemetry: true,
         disableWhatsNewNotifications: true,
         enableCrashReports: false,
     },
-    typescript: {
-        reactDocgen: "react-docgen-typescript",
-    },
     viteFinal: (config) => {
         dotenv.config()
         return mergeConfig(config, {
-            resolve: {
-                tsconfigPaths: true,
-            },
             plugins: [
+                tsconfigPaths(),
                 tokenGenerator(
                     writeFile,
                     resolve(import.meta.dirname, "../assets/scss.ts"),
@@ -54,7 +51,7 @@ const config = defineMain({
             ],
             optimizeDeps: {
                 exclude: ["ast-types", "fs", "fs/promises"],
-                include: ["react", "react-dom", "classnames"],
+                include: ["react", "react-dom", "classnames", "tabbable"],
             },
             define: {
                 "process.env": process.env,

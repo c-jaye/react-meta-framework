@@ -15,8 +15,4 @@ $const-aspects: () !default;
 			@content;
 		}
 	}
-};
-
-@mixin includeAspects {
-	@include buildAspects;
-};
+}
