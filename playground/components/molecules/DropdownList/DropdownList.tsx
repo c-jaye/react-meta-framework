@@ -1,10 +1,9 @@
 import { DROPDOWN_LIST_STATE, type DropdownListProps } from "./types"
 import type { JSONPrimitive, LabelValue } from "@cjaye/utils"
 import { type KeyboardEvent, useCallback, useEffect, useState } from "react"
-import { useComponentState, useOptionsSearch } from "@/hooks"
+import { useComponent, useComponentReturn, useOptionsSearch } from "@/hooks"
 import classNames from "classnames"
 import { stringOrJson } from "@/util"
-import useComponentReturn from "@/hooks/useComponentReturn"
 
 import DropdownListItem from "~/components/DropdownListItem"
 
@@ -20,7 +19,7 @@ export const DropdownList = <T extends JSONPrimitive = JSONPrimitive>({
     children,
     ...props
 }: DropdownListProps<T>) => {
-    const { ref } = useComponentState({ ...props, stateDef: props.stateDef ?? DROPDOWN_LIST_STATE })
+    const { ref } = useComponent({ ...props, stateDef: props.stateDef ?? DROPDOWN_LIST_STATE })
     const { ref: itemRef, refs: itemRefs, updateStates: updateItemStates } = useComponentReturn()
 
     const [selectedValue, setSelectedValue] = useState<T | null>(value)

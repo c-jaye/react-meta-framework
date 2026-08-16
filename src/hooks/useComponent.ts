@@ -1,10 +1,9 @@
 import { COMPONENT_STATE_ORDER, DEFAULT_COMPONENT_STATE } from "@/const/state"
 import type { ComponentState, ComponentStateFull, ComponentStatePartial, ComponentStateProps, UseComponentReturn } from "@/types"
 import { type JSONObject, type Maybe, type Mutable, type Obj, deepMerge, deepMergeAll, fromJson, isFunc, isIn, keysOf, wait } from "@cjaye/utils"
+import { filterObj, nextFocusable } from "@/util"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { filterObj } from "@/util/com"
-import { nextFocusable } from "@/util/dom"
-import useSharedState from "./useSharedState"
+import { useSharedState } from "@/hooks"
 
 export default function useComponent<S extends ComponentStatePartial = ComponentStateFull>(
     options?: ComponentStateProps<S>,

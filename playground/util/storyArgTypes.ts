@@ -1,4 +1,4 @@
-import type { FontFaceConfig, FontMetricsConfig, FontTypeConfig } from "@/types/components"
+import type { FontFaceConfig, FontMetricsConfig, FontTypeConfig } from "@/types"
 import type { Meta } from "@storybook/react-vite"
 
 export const fontTypeArgTypes: Meta<FontTypeConfig>["argTypes"] = {
