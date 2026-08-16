@@ -1,6 +1,6 @@
 import type { TestCardProps } from "./types"
 import classNames from "classnames"
-import useComponent from "@/hooks/useComponent"
+import { useComponent } from "@/hooks"
 
 import scss from "./test-card.module.scss"
 

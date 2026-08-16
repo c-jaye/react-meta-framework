@@ -1,7 +1,7 @@
 import { DROPDOWN_LIST_ITEM_STATE, type DropdownListItemProps } from "./types"
 import type { JSONPrimitive } from "@cjaye/utils"
 import classNames from "classnames"
-import useComponent from "@/hooks/useComponent"
+import { useComponent } from "@/hooks"
 import { useEffect } from "react"
 
 import scss from "./dropdown-list-item.module.scss"

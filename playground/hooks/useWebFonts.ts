@@ -1,4 +1,4 @@
-import { type CanvasMetrics, type Metrics, calculateMetrics, installFontFace, measureText } from "@/util/type"
+import { type CanvasMetrics, type Metrics, calculateMetrics, installFontFace, measureText } from "@/util"
 import type { LabelValue, Obj } from "@cjaye/utils"
 import { fetchAny, fetchJson, toUrlParams } from "@cjaye/utils"
 import { useCallback, useRef, useState } from "react"
