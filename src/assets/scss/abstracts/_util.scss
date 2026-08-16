@@ -1,0 +1,68 @@
+@mixin size($width: null, $height: null) {
+    min-width: $width;
+    max-width: $width;
+    @if $height == null {
+        min-height: $width;
+        max-height: $width;
+    }
+    @else {
+        min-height: $height;
+        max-height: $height;
+    }
+}
+
+@mixin truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@mixin transparent {
+    pointer-events: none;
+    user-select: none;
+}
+
+@mixin opaque {
+    pointer-events: all;
+    user-select: all;
+    visibility: visible;
+}
+
+@mixin mask(
+    $angle: 180deg,
+    $thresholdA: 50%,
+    $thresholdB: 100%,
+    $to: token(surface-shadow-black100)
+) {
+    mask-image: linear-gradient(
+        #{$angle},
+        token(surface-shadow-black0) 0%,
+        token(surface-shadow-black0) $thresholdA,
+        $to $thresholdB,
+        $to 100%
+    );
+}
+
+@mixin overlay {
+    &::after {
+        @include transition;
+        content: "";
+        position: absolute;
+        inset: 0;
+        height: 100%;
+        width: 100%;
+        @content;
+    }
+}
+
+@mixin underlay {
+    &::before {
+        @include transition;
+        content: "";
+        position: absolute;
+        inset: 0;
+        height: 100%;
+        width: 100%;
+        @content;
+    }
+}

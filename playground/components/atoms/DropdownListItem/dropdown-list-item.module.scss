@@ -6,13 +6,15 @@
         align-items: center;
         height: unit(8);
         width: 100%;
+        display: grid;
+        place-items: center start;
         padding: 0 unit(1.8);
         border: solid unit(0.2) transparent;
         background: token("bg-idle");
         user-select: none;
         transition: all 0.2s ease;
 
-        .text {
+        .label {
             @include styleBody;
             user-select: none;
             pointer-events: none;
@@ -24,7 +26,7 @@
         background: token("bg-selected");
     }
     @if $slot == "hover" {
-        .text {
+        .label {
             color: token("fg-hover");
         }
     }
@@ -44,7 +46,7 @@
         outline: solid unit(0.2) token("border-focus");
     }
     @if $slot == "error" {
-        .text {
+        .label {
             color: token("fg-error");
         }
     }

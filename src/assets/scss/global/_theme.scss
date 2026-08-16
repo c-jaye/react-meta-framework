@@ -12,7 +12,3 @@ $const-themes: () !default;
         }
     }
 }
-
-@mixin includeThemes {
-    @include buildThemes;
-}

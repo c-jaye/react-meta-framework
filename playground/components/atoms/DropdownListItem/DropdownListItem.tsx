@@ -24,15 +24,15 @@ export const DropdownListItem = <T extends JSONPrimitive = JSONPrimitive>({
         <div
             {...props}
             ref={ref}
-            className={classNames("prose", scss.dropdownListItem, className)}
+            className={classNames(scss.dropdownListItem, className)}
             onClick={(ev) => {
                 onSelection?.(value === null ? null : { label, value })
                 onClick?.(ev)
             }}
         >
-            <span className={classNames(scss.text)}>
-                {label}
-            </span>
+            <div className={classNames("prose", scss.label)}>
+                <span>{label}</span>
+            </div>
         </div>
     )
 }

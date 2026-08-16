@@ -1,49 +1,49 @@
 @use "../../../../src/assets/scss/abstracts/abstracts" as *;
 
 @mixin styleH1 {
-  @include useFontFace("OpenSansBold");
+  @include useFontFace("open-sans-bold");
   @include defineFontStyle(8, 1.4, 0);
 }
 
 @mixin styleHeader {
-  @include useFontFace("OpenSansBold");
+  @include useFontFace("open-sans-bold");
   @include defineFontStyle(6, 1.4, 0);
 }
 
 @mixin styleBody {
-  @include useFontFace("OpenSansBold");
+  @include useFontFace("open-sans-bold");
   @include defineFontStyle(3, 1.4, 0);
 }
 
 @mixin styleCaption {
-  @include useFontFace("OpenSansBold");
+  @include useFontFace("open-sans-bold");
   @include defineFontStyle(2, 1.6, 0);
 }
 
 @mixin styleCynclyCaption {
-  @include useFontFace("OpenSansBold");
+  @include useFontFace("open-sans-bold");
   @include defineFontStyle(1.2, 1.4, 0) {
     color: token("text-primary");
-  };
+  }
 }
 
 @mixin styleCynclyH3 {
-  @include useFontFace("OpenSansBold");
+  @include useFontFace("open-sans-bold");
   @include defineFontStyle(3, 1.2, -0.1) {
     color: token("text-primary");
-  };
+  }
 }
 
 @mixin styleCynclyBody {
-  @include useFontFace("OpenSansBold");
+  @include useFontFace("open-sans-bold");
   @include defineFontStyle(1.8, 1.4, 0) {
     color: token("text-primary");
-  };
+  }
 }
 
 @mixin styleCynclyButton {
-  @include useFontFace("OpenSansBold");
+  @include useFontFace("open-sans-bold");
   @include defineFontStyle(1.6, 1.5, 0) {
     color: token("text-primary");
-  };
+  }
 }
