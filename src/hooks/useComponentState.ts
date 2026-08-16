@@ -3,6 +3,7 @@ import type { ComponentState, ComponentStateProps, UseComponentStateReturn } fro
 import { type Mutable, type Obj, deepMerge, deepMergeAll, entriesOf, fromJson, isBool, isFunc, isIn, keysOf, wait } from "@cjaye/utils"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { nextFocusable } from "@/util/dom"
+import useSharedState from "./useSharedState"
 
 export default function useComponentState<S extends Obj<boolean | undefined> = ComponentState>(
     options?: ComponentStateProps<S> & { utiliseTouch?: boolean },
@@ -25,6 +26,52 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
     const overrides = useRef<Obj<Partial<ComponentState<S>>>>({})
 
     const [finalState, setFinalState] = useState<Obj<ComponentState<S>> & ComponentState<S>>({})
+
+    const globalFocusSettings = useMemo(() => {
+        const focusData = {
+            lastTime: 0,
+            queue: [] as ["focus" | "blur", HTMLElement, () => boolean][],
+        }
+        const pushFocus = (el: HTMLElement, onConfirm: () => boolean = () => true) => {
+            focusData.queue.push(["focus", el, onConfirm])
+            void update()
+        }
+        const pushBlur = (el: HTMLElement, onConfirm: () => boolean = () => true) => {
+            focusData.queue.push(["blur", el, onConfirm])
+            void update()
+        }
+        const update = async () => {
+            if (!focusData.queue.length) return
+            const delay = 33
+            const rt = focusData.lastTime = Date.now()
+            void await wait(delay)
+            if (rt !== focusData.lastTime) return
+            focusData.lastTime = 0
+            if (!focusData.queue.filter(x => x[0] === "focus").length) {
+                focusData.queue.filter(x => x[0] === "blur").forEach((x) => {
+                    if (!x[2]()) return
+                    x[1]?.blur()
+                })
+                focusData.queue = []
+                return
+            }
+            focusData.queue.filter(x => x[0] === "focus").reverse().find((x) => {
+                if (!x[2]()) return false
+                x[1]?.focus()
+                return true
+            })
+            focusData.queue = []
+        }
+
+        return {
+            focusData,
+            pushFocus,
+            pushBlur,
+            updateFocus: update,
+        }
+    }, [])
+
+    const { pushFocus, pushBlur } = useSharedState(globalFocusSettings)
 
     const isTouch = useMemo(() => {
         return utiliseTouch && !window.matchMedia("(hover: hover) and (pointer: fine) and (update: fast)").matches
@@ -106,14 +153,35 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
             el.disabled = !!prevState.disabled
         }
 
-        const focusableEl = nextFocusable(el.parentElement)
+        const focusableEl = nextFocusable(el)
+
+        if (!focusableEl) return
+
         if (newState.focus && !prevState.focus && focusableEl !== document.activeElement) {
-            focusableEl?.focus()
+            pushFocus(focusableEl, () => {
+                const focusableEl = nextFocusable(el)
+                const newState = normaliseState(deepMergeAll(
+                    states.current[key],
+                    queuedState.current[key] ?? {},
+                    overrides.current?.[key] ?? {},
+                    getAttributeState(key),
+                ))
+                return !!newState.focus && focusableEl !== document.activeElement
+            })
         }
         else if (!newState.focus && prevState.focus && focusableEl === document.activeElement) {
-            focusableEl?.blur()
+            pushBlur(focusableEl, () => {
+                const focusableEl = nextFocusable(el)
+                const newState = normaliseState(deepMergeAll(
+                    states.current[key],
+                    queuedState.current[key] ?? {},
+                    overrides.current?.[key] ?? {},
+                    getAttributeState(key),
+                ))
+                return !newState.focus && focusableEl === document.activeElement
+            })
         }
-    }, [getAttributeState, normaliseState, onStateChange, stateDefinition])
+    }, [getAttributeState, normaliseState, onStateChange, pushBlur, pushFocus, stateDefinition])
 
     const updateState = useCallback(<S extends Obj<boolean | undefined> = Obj<boolean | undefined>>(
         patch: Partial<ComponentState<S>>,

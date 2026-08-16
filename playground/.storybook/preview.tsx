@@ -1,8 +1,8 @@
 import type { Preview } from "@storybook/react-vite"
 import { StrictMode } from "react"
-import { themes } from "~/assets/scss"
+import { themes } from "../assets/scss"
 
-import "~/assets/scss/global.scss"
+import "../assets/scss/global.scss"
 
 const preview: Preview = {
     parameters: {
