@@ -1,2 +1,2 @@
-export { default as useComponentState } from "./useComponentState"
+export { default as useComponentState } from "./useComponent"
 export { default as useOptionsSearch } from "./useOptionsSearch"

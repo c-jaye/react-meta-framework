@@ -1,5 +1,3 @@
-import type { ComponentState } from "@/types"
-
 export const STATE_ADDON_ID = "react-meta-framework-state"
 export const STATE_TOOL_ID = `${STATE_ADDON_ID}/tool`
 export const STATE_PANEL_ID = `${STATE_ADDON_ID}/panel`
@@ -22,7 +20,7 @@ export const DEFAULT_COMPONENT_STATE = {
     error: false,
     pressed: false,
     disabled: false,
-} as const satisfies ComponentState
+} as const
 
 export const COMPONENT_STATE_ORDER = [
     "selected",

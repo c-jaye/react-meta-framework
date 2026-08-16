@@ -1,6 +1,6 @@
 import type { TestCardProps } from "./types"
 import classNames from "classnames"
-import useComponentState from "@/hooks/useComponentState"
+import useComponent from "@/hooks/useComponent"
 
 import scss from "./test-card.module.scss"
 
@@ -12,12 +12,11 @@ export const TestCard = ({
     logoSrc,
     buttons,
     "data-theme": theme = "cyncly",
-    stateProps,
     className,
     ...props
 }: TestCardProps) => {
-    const { ref } = useComponentState(stateProps)
-    const { ref: buttonRef } = useComponentState()
+    const { ref } = useComponent(props)
+    const { ref: buttonRef } = useComponent()
 
     return (
         <div
