@@ -2,13 +2,6 @@ import { type ComponentPropsWithRef, type ElementType, type MutableRefObject, ty
 import type { Maybe, Obj } from "@cjaye/utils"
 import type { THEME } from "@/const/state"
 
-export interface UseComponentStateReturn<S extends Obj<boolean | undefined> = ComponentState> {
-    ref: (node: HTMLElement | SVGElement | null, key?: string) => void
-    refs: MutableRefObject<Obj<HTMLElement | SVGElement | null>>
-    state: ComponentState<S>
-    updateState: (patch: Partial<ComponentState<S>>, key?: string) => void
-}
-
 export type ComponentState<T extends Obj<boolean | undefined> = Obj<boolean | undefined>> = Obj<boolean | undefined> & {
     selected?: boolean | undefined
     hover?: boolean | undefined
@@ -24,6 +17,13 @@ export type ComponentState<T extends Obj<boolean | undefined> = Obj<boolean | un
     [K in keyof T]?: boolean | undefined
 }
 
+export interface UseComponentStateReturn<S extends Obj<boolean | undefined> = ComponentState> {
+    ref: (node: HTMLElement | SVGElement | null, key?: string) => void
+    refs: MutableRefObject<Obj<HTMLElement | SVGElement | null>>
+    state: ComponentState<S>
+    updateState: (patch: Partial<ComponentState<S>>, key?: string) => void
+}
+
 export interface ComponentStateProps<
     S extends ComponentState = ComponentState,
     E extends Ref<HTMLElement> = Ref<HTMLElement>,
@@ -32,7 +32,7 @@ export interface ComponentStateProps<
     stateOverride?: { [K in keyof ComponentState<S>]?: boolean | Obj<boolean | undefined> }
     onStateChange?: (state: ComponentState<S>, key: string) => void
     ref?: E
-    stateRef?: MutableRefObject<Maybe<UseComponentStateReturn<S>>>
+    stateRef?: (data: Maybe<UseComponentStateReturn<S>>, key?: string) => void
 }
 
 export type BaseProps<

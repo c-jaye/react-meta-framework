@@ -192,6 +192,10 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
         void refresh(key)
     }, [refresh])
 
+    const updateStates = useCallback((patch: (key: string) => Partial<ComponentState<S>>) => {
+        keysOf(refs.current).forEach(k => updateState(patch(k)))
+    }, [updateState])
+
     const getRef = useCallback((node: HTMLElement | SVGElement | null, key = "default") => {
         const ref = refs.current[key]!
         const observer = observers.current[key]
@@ -400,16 +404,15 @@ export default function useComponentState<S extends Obj<boolean | undefined> = C
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [stateOverride])
 
-    const returnData: UseComponentStateReturn<S> = {
+    const returnData = useMemo<UseComponentStateReturn<S>>(() => ({
         ref: getRef,
-        refs: refs,
+        refs,
         state: finalState,
         updateState,
-    }
+        updateStates,
+    }), [finalState, getRef, updateState, updateStates])
 
-    if (stateRef) {
-        stateRef.current = returnData
-    }
+    useEffect(() => stateRef?.(returnData), [returnData, stateRef])
 
     return returnData
 }

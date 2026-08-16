@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import type { DropdownProps } from "./types"
 import type { JSONPrimitive } from "@cjaye/utils"
-import type { UseComponentStateReturn } from "@/types"
 import classNames from "classnames"
+import useComponent from "@/hooks/useComponent"
 import useComponentState from "@/hooks/useComponentState"
 
 import DropdownList from "~/components/DropdownList"
@@ -22,7 +22,7 @@ export const Dropdown = <T extends JSONPrimitive = JSONPrimitive>({
         onStateChange: (s, k) => {
             if (!s.focusWithin) updateState({ active: false })
             updateButtonState({ disabled: s.disabled })
-            listState.current?.updateState({ active: s.active, focus: s.active, disabled: s.disabled })
+            updateListState({ active: s.active, focus: s.active, disabled: s.disabled })
             stateProps?.onStateChange?.(s, k)
         },
     })
@@ -33,7 +33,7 @@ export const Dropdown = <T extends JSONPrimitive = JSONPrimitive>({
 
     const { ref: searchRef } = useComponentState()
 
-    const listState = useRef<UseComponentStateReturn>()
+    const { ref: listRef, updateState: updateListState } = useComponent()
 
     const [selectedValue, setSelectedValue] = useState<T | null>(value)
     const [term, setTerm] = useState("")
@@ -59,7 +59,10 @@ export const Dropdown = <T extends JSONPrimitive = JSONPrimitive>({
                 ref={buttonRef}
                 className={classNames("prose", scss.button)}
                 tabIndex={state.active ? -1 : 0}
-                onClick={() => updateState({ active: !state.active })}
+                onClick={() => {
+                    updateState({ active: !state.active })
+                    updateListState({ active: !state.active })
+                }}
             >
                 <span>
                     {items.find(item => item.value === selectedValue)?.label}
@@ -81,7 +84,7 @@ export const Dropdown = <T extends JSONPrimitive = JSONPrimitive>({
                     updateButtonState({ focus: true })
                     ev.preventDefault()
                 }}
-                stateProps={{ stateRef: listState }}
+                stateProps={{ stateRef: listRef }}
             />
         </div>
     )
