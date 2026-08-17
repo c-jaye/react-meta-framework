@@ -13,7 +13,7 @@ export interface ComponentStateProps<
     ref?: E
     stateRef?: (data: Maybe<UseComponentReturn<S>>, key?: string) => void
     stateDef?: ComponentState<S>
-    stateForce?: { [K in keyof ComponentState<S>]?: boolean | undefined }
+    stateForce?: ComponentState<S>
     stateUseTouch?: boolean
     onStateChange?: (state: ComponentState<S>, key?: string) => void
 }
