@@ -39,7 +39,7 @@ export function generateStateStory<T extends BaseProps>(
                                         <Component
                                             key={`${s}-${i}`}
                                             {...args}
-                                            stateProps={{ stateOverride: { [s]: true } }}
+                                            stateForce={{ [s]: true }}
                                         />
                                     ))}
                                 </div>

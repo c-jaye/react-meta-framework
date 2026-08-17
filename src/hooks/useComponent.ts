@@ -23,7 +23,7 @@ export default function useComponent<S extends ComponentStatePartial = Component
     const observers = useRef<Obj<MutationObserver>>({})
     const refreshTimes = useRef<Obj<number>>({})
     const queuedState = useRef<Obj<ComponentState<S>>>({})
-    const overrides = useRef<ComponentState<S>>({})
+    const overrides = useRef<ComponentState<S>>(stateForce ?? {})
 
     const [finalState, setFinalState] = useState<ComponentState<S> & Obj<ComponentState<S>>>({})
 
@@ -373,20 +373,29 @@ export default function useComponent<S extends ComponentStatePartial = Component
     }, [parentRef, stateDefinition, refresh, isTouch, updateState, getAttributeState])
 
     useEffect(() => {
-        keysOf(refs.current).forEach((key) => {
+        if (!stateForce) {
+            overrides.current = {}
+            return
+        }
+
+        const hasChanged = keysOf(refs.current).reduce((v, key) => {
             const newState = deepMerge(
                 queuedState.current[key],
-                overrides.current ?? {},
+                stateForce ?? {},
             )
 
             if (keysOf(newState).every(k => newState[k] === states.current[key]?.[k])) {
-                return
+                return v
             }
 
             queuedState.current[key] = newState
 
             void refresh(key)
-        })
+
+            return true
+        }, false)
+
+        if (hasChanged) overrides.current = stateForce
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [stateForce])
 
