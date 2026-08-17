@@ -18,14 +18,18 @@
     @include type.buildFonts;
 }
 
+$svg: "a, clipPath, filter, foreignObject, image, marker, mask, path, pattern, script, style, switch, text, view";
+
 :where([data-rms]) {
-    &, & * {
+    &, & *:not(#{$svg}) {
         &, &::before, &::after, &::backdrop {
             @include reset.buildResetBase;
             @include reset.buildResetHidden;
         }
     }
-    @include type.buildBase;
+    *:not(#{$svg}) {
+        @include type.buildBase;
+    }
     & * {
         @include type.buildInheritance;
     }
