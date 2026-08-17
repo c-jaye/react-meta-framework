@@ -110,28 +110,28 @@ export const FontMetrics = ({
                 />
             </div>
             <div className={scss.gridH}>
-                <div className="prose"><label>Ascent</label></div>
-                <div className="prose"><input type="number" value={ascent} onInput={e => setAscent(parseFloat(e.currentTarget.value))} /></div>
+                <div className="rmf-prose"><label>Ascent</label></div>
+                <div className="rmf-prose"><input type="number" value={ascent} onInput={e => setAscent(parseFloat(e.currentTarget.value))} /></div>
             </div>
             <div className={scss.gridH}>
-                <div className="prose"><label>Cap Height</label></div>
-                <div className="prose"><input type="number" value={capHeight} onInput={e => setCapHeight(parseFloat(e.currentTarget.value))} /></div>
+                <div className="rmf-prose"><label>Cap Height</label></div>
+                <div className="rmf-prose"><input type="number" value={capHeight} onInput={e => setCapHeight(parseFloat(e.currentTarget.value))} /></div>
             </div>
             <div className={scss.gridH}>
-                <div className="prose"><label>Ex Height</label></div>
-                <div className="prose"><input type="number" value={exHeight} onInput={e => setExHeight(parseFloat(e.currentTarget.value))} /></div>
+                <div className="rmf-prose"><label>Ex Height</label></div>
+                <div className="rmf-prose"><input type="number" value={exHeight} onInput={e => setExHeight(parseFloat(e.currentTarget.value))} /></div>
             </div>
             <div className={scss.gridH}>
-                <div className="prose"><label>Descent</label></div>
-                <div className="prose"><input type="number" value={descent} onInput={e => setDescent(parseFloat(e.currentTarget.value))} /></div>
+                <div className="rmf-prose"><label>Descent</label></div>
+                <div className="rmf-prose"><input type="number" value={descent} onInput={e => setDescent(parseFloat(e.currentTarget.value))} /></div>
             </div>
             <div className={scss.gridH}>
-                <div className="prose"><label>Line Gap</label></div>
-                <div className="prose"><input type="number" value={lineGap} onInput={e => setLineGap(parseFloat(e.currentTarget.value))} /></div>
+                <div className="rmf-prose"><label>Line Gap</label></div>
+                <div className="rmf-prose"><input type="number" value={lineGap} onInput={e => setLineGap(parseFloat(e.currentTarget.value))} /></div>
             </div>
             <div className={scss.gridH}>
-                <div className="prose"><label>Size</label></div>
-                <div className="prose"><input type="number" value={size} onInput={e => setSize(parseFloat(e.currentTarget.value))} /></div>
+                <div className="rmf-prose"><label>Size</label></div>
+                <div className="rmf-prose"><input type="number" value={size} onInput={e => setSize(parseFloat(e.currentTarget.value))} /></div>
             </div>
             <FontMetricGrid
                 adjusted={adjusted}

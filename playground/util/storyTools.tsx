@@ -30,7 +30,7 @@ export function generateStateStory<T extends BaseProps>(
                             <div key={s} className={scss.section}>
                                 <label
                                     key={`${s}-label`}
-                                    className="prose"
+                                    className="rmf-prose"
                                 >
                                     <span>{titleCase(s)}</span>
                                 </label>

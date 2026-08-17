@@ -63,7 +63,7 @@ export const FontMetricGrid = ({
                 {showMetrics && showBaseline && <div className={scss.baseline} />}
                 {showMetrics && showDescent && <div className={scss.descent} />}
             </div>
-            <p className={classNames("prose", {
+            <p className={classNames("rmf-prose", {
                 legacy: !adjusted,
                 unpadded: !padded || !adjusted,
             }, scss.text)}
