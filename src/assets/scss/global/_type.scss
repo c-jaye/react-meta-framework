@@ -147,7 +147,7 @@ $const-fonts: () !default;
 }
 
 @mixin buildProse {
-  & .prose {
+  & .rmf-prose {
     overflow: visible;
     width: 100%;
     display: grid;
