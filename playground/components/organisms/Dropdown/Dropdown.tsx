@@ -50,13 +50,13 @@ export const Dropdown = <T extends JSONPrimitive = JSONPrimitive>({
         >
             <div
                 ref={searchRef}
-                className={classNames("prose", scss.term)}
+                className={classNames("rmf-prose", scss.term)}
             >
                 <span>{term}</span>
             </div>
             <button
                 ref={buttonRef}
-                className={classNames("prose", scss.button)}
+                className={classNames("rmf-prose", scss.button)}
                 tabIndex={state.active ? -1 : 0}
                 onClick={() => {
                     updateState({ active: !state.active })

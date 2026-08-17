@@ -40,13 +40,13 @@ export const TestCard = ({
                         alt={title}
                     />
                 </div>
-                <div className={classNames("prose", scss.caption)}>
+                <div className={classNames("rmf-prose", scss.caption)}>
                     <p>{caption}</p>
                 </div>
-                <div className={classNames("prose", scss.title)}>
+                <div className={classNames("rmf-prose", scss.title)}>
                     <h2>{title}</h2>
                 </div>
-                <div className={classNames("prose", scss.description)}>
+                <div className={classNames("rmf-prose", scss.description)}>
                     <p>{description}</p>
                 </div>
                 <div className={classNames(scss.buttons)}>
@@ -55,7 +55,7 @@ export const TestCard = ({
                             key={b.to}
                             ref={el => buttonRef(el, b.to)}
                             href={b.to}
-                            className={classNames("prose", scss.button, {
+                            className={classNames("rmf-prose", scss.button, {
                                 primary: scss.primary,
                                 secondary: scss.secondary,
                                 tertiary: scss.tertiary,

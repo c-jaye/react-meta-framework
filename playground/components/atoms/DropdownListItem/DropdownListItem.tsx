@@ -32,7 +32,7 @@ export const DropdownListItem = <T extends JSONPrimitive = JSONPrimitive>({
                 onClick?.(ev)
             }}
         >
-            <div className={classNames("prose", scss.label)}>
+            <div className={classNames("rmf-prose", scss.label)}>
                 <span>{label}</span>
             </div>
         </div>

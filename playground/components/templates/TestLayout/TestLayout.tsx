@@ -22,18 +22,18 @@ export const TestLayout = ({
                 "--aspect-unit-wide": unitWide,
             } as CSSProperties}
         >
-            <h1 className={classNames("prose", scss.header)}>
+            <h1 className={classNames("rmf-prose", scss.header)}>
                 <span>Header</span>
             </h1>
             <div className={scss.panel} />
             <div className={scss.body}>
                 {arr(24).map(i => (
-                    <div key={i} className={classNames("prose", scss.card)}>
+                    <div key={i} className={classNames("rmf-prose", scss.card)}>
                         <h2>Card</h2>
                     </div>
                 ))}
             </div>
-            <footer className={classNames("prose", scss.footer)}>
+            <footer className={classNames("rmf-prose", scss.footer)}>
                 <h3>
                     Footer
                 </h3>
